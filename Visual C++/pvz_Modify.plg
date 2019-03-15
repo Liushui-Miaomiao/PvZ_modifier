@@ -6,20 +6,20 @@
 --------------------Configuration: pvz_Modify - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x804 /fo"Debug/pvz_Modify.res" /d "_DEBUG" "C:\Users\Administrator\Desktop\VC±‡“Î\pvz_Modify.rc"" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPF1FF.tmp" with contents
+Creating command line "rc.exe /l 0x804 /fo"Debug/pvz_Modify.res" /d "_DEBUG" "E:\C program\VC±‡“Î\pvz_Modify.rc"" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP1450.tmp" with contents
 [
 /nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/pvz_Modify.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"C:\Users\Administrator\Desktop\VC±‡“Î\pvz_Modify.cpp"
+"E:\C program\VC±‡“Î\pvz_Modify.cpp"
 ]
-Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPF1FF.tmp" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPF200.tmp" with contents
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP1450.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP1451.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/pvz_Modify.pdb" /debug /machine:I386 /out:"Debug/pvz_Modify.exe" /pdbtype:sept 
 ".\Debug\pvz_Modify.obj"
 ".\Debug\pvz_Modify.res"
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPF200.tmp"
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP1451.tmp"
 <h3>Output Window</h3>
 Compiling resources...
 Compiling...

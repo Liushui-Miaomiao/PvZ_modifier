@@ -63,8 +63,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 0,2,0,0
+ PRODUCTVERSION 0,2,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -82,14 +82,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "5Dpaly\0"
             VALUE "FileDescription", "pvz_Modify\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "FileVersion", "0, 2, 0, 0\0"
             VALUE "InternalName", "pvz_Modify\0"
             VALUE "LegalCopyright", "Copyright (C) 2019 流水“渺渺\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "pvz_Modify.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "植物大战僵尸 C语言修改器\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "ProductVersion", "0, 2, 0, 0\0"
             VALUE "SpecialBuild", "\0"
         END
     END
