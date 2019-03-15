@@ -94,6 +94,55 @@ DWORD getMemory_4(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,DWORD DEV_2,DWORD DEV_3,D
 	return DEV_4;
 }
 
+//基址，欲读取的数值
+DWORD readMemory(HANDLE hP,DWORD BaseAddr,SIZE_T Size){
+	DWORD Num;
+	ReadProcessMemory(hP,(LPVOID)BaseAddr,&Num,(SIZE_T)Size,0);
+	return Num;
+}
+
+//基址，一级偏移，欲读取的数值
+DWORD readMemory_1(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,SIZE_T Size){
+	DWORD finalAddr; 
+	finalAddr=getMemory_1(hP,BaseAddr,DEV_1,Size);
+	
+	DWORD Num;
+	ReadProcessMemory(hP,(LPVOID)finalAddr,&Num,(SIZE_T)Size,0);
+	return Num;
+}
+
+//基址，一级偏移，二级偏移，欲读取的数值
+DWORD readMemory_2(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,DWORD DEV_2,SIZE_T Size){
+	DWORD finalAddr; 
+	finalAddr=getMemory_2(hP,BaseAddr,DEV_1,DEV_2,Size);
+	
+	DWORD Num;
+	ReadProcessMemory(hP,(LPVOID)finalAddr,&Num,(SIZE_T)Size,0);
+	return Num;
+}
+
+//基址，一级偏移，二级偏移，三级偏移，欲读取的数值
+DWORD readMemory_3(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,DWORD DEV_2,DWORD DEV_3,SIZE_T Size){
+	DWORD finalAddr; 
+	finalAddr=getMemory_3(hP,BaseAddr,DEV_1,DEV_2,DEV_3,Size);
+	
+	DWORD Num;
+	ReadProcessMemory(hP,(LPVOID)finalAddr,&Num,(SIZE_T)Size,0);
+	return Num;
+}
+/*
+//基址，一级偏移，二级偏移，三级偏移，四级偏移，欲读取的数值
+DWORD readMemory_4(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,DWORD DEV_2,DWORD DEV_3,DWORD DEV_4,SIZE_T Size){
+	DWORD finalAddr; 
+	finalAddr=getMemory_4(hP,BaseAddr,DEV_1,DEV_2,DEV_3,DEV_4,Size);
+	
+	DWORD Num;
+	ReadProcessMemory(hP,(LPVOID)finalAddr,&Num,(SIZE_T)Size,0);
+	return Num;
+}*/
+
+/****************上读取 下写入****************/
+
 //基址，欲修改的数值
 DWORD writeMod(HANDLE hP,DWORD BaseAddr,DWORD Num,SIZE_T Size){
 	if(WriteProcessMemory(hP,(LPVOID)BaseAddr,&Num,(SIZE_T)Size,0)){
@@ -138,9 +187,9 @@ DWORD writeMod_3(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,DWORD DEV_2,DWORD DEV_3,DW
 		return 0;
 	}
 }
-
+/*
 //基址，一级偏移，二级偏移，三级偏移，四级偏移，欲修改的数值
-DWORD writeMod_4(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,DWORD DEV_2,DWORD DEV_3,DWORD DEV_4,DWORD Num,SIZE_T Size){
+DWORD writeMemory_4(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,DWORD DEV_2,DWORD DEV_3,DWORD DEV_4,DWORD Num,SIZE_T Size){
 	DWORD finalAddr; 
 	finalAddr=getMemory_4(hP,BaseAddr,DEV_1,DEV_2,DEV_3,DEV_4,Size);
 	
@@ -149,4 +198,4 @@ DWORD writeMod_4(HANDLE hP,DWORD BaseAddr,DWORD DEV_1,DWORD DEV_2,DWORD DEV_3,DW
 	}else{
 		return 0;
 	}
-}
+}*/
