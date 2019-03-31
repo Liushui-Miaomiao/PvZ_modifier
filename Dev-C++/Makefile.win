@@ -1,5 +1,5 @@
 # Project: pvz_Modify
-# Makefile created by Dev-C++ 5.4.2
+# Makefile created by Dev-C++ 5.9.2
 
 CPP      = g++.exe
 CC       = gcc.exe
@@ -13,12 +13,11 @@ CXXINCS  = -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include"
 BIN      = pvz_Modify.exe
 CXXFLAGS = $(CXXINCS) -m32
 CFLAGS   = $(INCS) -m32
-RM       = rm -f
+RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
 
 all: all-before $(BIN) all-after
-
 
 clean: clean-custom
 	${RM} $(OBJ) $(BIN)
@@ -31,3 +30,4 @@ pvz_Modify.o: pvz_Modify.cpp
 
 pvz_Modify_private.res: pvz_Modify_private.rc 
 	$(WINDRES) -i pvz_Modify_private.rc -F pe-i386 --input-format=rc -o pvz_Modify_private.res -O coff 
+

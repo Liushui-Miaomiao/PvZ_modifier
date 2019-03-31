@@ -10,9 +10,9 @@
 #define VER_MINOR	2
 #define VER_RELEASE	0
 #define VER_BUILD	0
-#define COMPANY_NAME	""
+#define COMPANY_NAME	"5Dplay"
 #define FILE_VERSION	"0.2.0.0"
-#define FILE_DESCRIPTION	"pvz_modify"
+#define FILE_DESCRIPTION	"pvz_Modify"
 #define INTERNAL_NAME	""
 #define LEGAL_COPYRIGHT	"Copyright (C) 2019 Á÷Ë®¡°ÃìÃì"
 #define LEGAL_TRADEMARKS	""
