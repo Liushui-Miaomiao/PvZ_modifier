@@ -51,7 +51,7 @@ AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit1]
-FileName=pvz_Modify.cpp
+FileName=pvz_Modify.c
 CompileCpp=1
 Folder=
 Compile=1

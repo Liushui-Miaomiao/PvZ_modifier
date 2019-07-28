@@ -25,8 +25,8 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-pvz_Modify.o: pvz_Modify.cpp
-	$(CPP) -c pvz_Modify.cpp -o pvz_Modify.o $(CXXFLAGS)
+pvz_Modify.o: pvz_Modify.c
+	$(CPP) -c pvz_Modify.c -o pvz_Modify.o $(CXXFLAGS)
 
 pvz_Modify_private.res: pvz_Modify_private.rc 
 	$(WINDRES) -i pvz_Modify_private.rc -F pe-i386 --input-format=rc -o pvz_Modify_private.res -O coff 
