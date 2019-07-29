@@ -1,7 +1,7 @@
 /*植物大战僵尸C语言修改器*/
 
 //是否为调试版本
-#define isDebug 0
+#define DEBUG 0
 
 #include <stdio.h>
 #include <conio.h>
@@ -27,7 +27,7 @@ int little=0;
 
 /*函数声明*/
 int openGameProcess();
-int openMod();
+int openModify();
 void menu();
 void upData();
 void Choice();
@@ -37,6 +37,7 @@ void pause();
 void showMiniGameList();
 void cheatCode();
 void showOpenCheat();
+int limit(int value,int min,int max);
 void color(int c);
 
 /*主函数*/
@@ -45,7 +46,7 @@ int main(void){
 	SetConsoleTitle("【植物大战僵尸】 C语言修改器 v0.21");
 	//检测游戏进程
 	isRun=openGameProcess();
-
+	
 	while(1){
 		menu();
 		color(14);
@@ -62,7 +63,7 @@ int main(void){
 int openGameProcess(){
 	color(14);
 	printf("正在打开进程...\n");
-
+	
 	//寻找进程名称并返回pid
 	if(FindProcessPid(processName,Pid)){
 		printf("[%s][Pid：%d]\n",processName,Pid);
@@ -86,16 +87,18 @@ int openGameProcess(){
 		color(14);
 		printf("未找到游戏进程：%s\n",processName);
 	}
+	
 	return 0;
 }
 
 //修改器是否已经读入游戏进程
-int openMod(){
+int openModify(){
 	if(hProcess==0){
 		color(14);
 		printf("\n请先打开修改器搜索游戏句柄！\n");
 		return 0;
 	}
+	
 	return 1;
 }
 
@@ -106,7 +109,7 @@ void menu(){
 	printf("【植物大战僵尸】 C语言修改器\n\n");
 	printf("O：重新打开/搜索进程[%s]\n",processName);
 	if(isRun){
-		#if isDebug
+		#if DEBUG
 			printf("T：测试代码（Debug）\n");
 		#endif
 		printf("\na：常规修改：\n");
@@ -136,7 +139,6 @@ void menu(){
 		printf("\nf：其他修改：\n");
 		printf("1：花瓶透视\n");
 		printf("2：显示隐藏小游戏\n");
-
 	}
 	printf("\n特殊功能：\n");
 	printf("~：查看修改器更新公告\n");
@@ -158,12 +160,15 @@ void upData(){
 	printf("修复/增强了以下功能：\n");
 	printf("\t(1)花瓶透视不稳定性修复\n\t(2)秒杀僵尸不稳定性修复\n");
 	printf("v0.21 [2019.7.28] 优化内存读写操作\n");
-
+	
 	pause();
 }
 
 //判断选择
 void Choice(){
+	//中间值
+	int _tempValue;
+	
 	color(13);
 	//根据字符判断应该执行什么流程
 	switch(command){
@@ -171,20 +176,20 @@ void Choice(){
 			isRun=openGameProcess();
 			pause();
 			break;
-		#if isDebug
-		case 'T':
-			if(openMod()){
-				printf("\n当前值为：");
-			}
-			break;
+		#if DEBUG
+			case 'T':
+				if(!openModify()){
+					printf("\n当前值为：");
+				}
+				break;
 		#endif
 		//常规修改
 		case 'a':
-			if(!openMod()){
+			if(!openModify()){
 				pause();
 				break;
 			}
-
+			
 			getchar();
 			color(14);
 			printf("\n已进入【常规修改】菜单，请选择子选项：");
@@ -192,32 +197,28 @@ void Choice(){
 			color(13);
 			switch(command){
 				case '1':
-					if(openMod()){
-						int Sun;
+					if(openModify()){
 						printf("\n请输入要修改的阳光数量：");
-						scanf("%d",&Sun);
-						if(Sun<0)Sun=0;
-						if(Sun>9990)Sun=9990;
-						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,Sun,4,0x768,0x5560),"阳光");
+						scanf("%d",&_tempValue);
+						_tempValue=limit(_tempValue,0,9990);
+						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,_tempValue,4,0x768,0x5560),"阳光");
 					}
 					break;
 				case '2':
-					if(openMod()){
-						int Money;
+					if(openModify()){
 						printf("\n请输入要修改的金钱数量：");
-						scanf("%d",&Money);
-						if(Money<0)Money=0;
-						if(Money>99999)Money=99999;
-						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,Money,4,0x82C,0x28),"金钱");
+						scanf("%d",&_tempValue);
+						_tempValue=limit(_tempValue,0,99999);
+						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,_tempValue,4,0x82C,0x28),"金钱");
 					}
 					break;
 				case '3':
-					if(openMod()){
+					if(openModify()){
 						cheatMsg(writeMemory(hProcess,0x00487296,0,0x1477,2),"卡牌无冷却");
 					}
 					break;
 				case '4':
-					if(openMod()){
+					if(openModify()){
 						if(backStage==1){
 							cheatMsg(writeMemory(hProcess,0x0054EBEF,0,0xC3,1),"取消后台");
 						}else{
@@ -227,17 +228,15 @@ void Choice(){
 					}
 					break;
 				case '5':
-					if(openMod()){
-						int Card;
+					if(openModify()){
 						printf("\n请输入要修改的卡槽格数（1~10）：");
-						scanf("%d",&Card);
-						if(Card<1)Card=1;
-						if(Card>10)Card=10;
-						cheatMsg(writeMemory(hProcess,0x006A9EC0,3,Card,4,0x768,0x144,0x24),"卡槽格数");
+						scanf("%d",&_tempValue);
+						_tempValue=limit(_tempValue,1,10);
+						cheatMsg(writeMemory(hProcess,0x006A9EC0,3,_tempValue,4,0x768,0x144,0x24),"卡槽格数");
 					}
 					break;
 				case '6':
-					if(openMod()){
+					if(openModify()){
 						cheatMsg(writeMemory(hProcess,0x0043158F,0,0xEB,1),"自动收集开启");
 					}
 					break;
@@ -247,11 +246,11 @@ void Choice(){
 			break;
 		//关卡修改
 		case 'b':
-			if(!openMod()){
+			if(!openModify()){
 				pause();
 				break;
 			}
-
+			
 			getchar();
 			color(14);
 			printf("\n已进入【关卡修改】菜单，请选择子选项：");
@@ -259,24 +258,21 @@ void Choice(){
 			color(13);
 			switch(command){
 				case '1':
-					if(openMod()){
-						int Checkpoint;
+					if(openModify()){
 						printf("\n请输入要修改的冒险关卡（例如我要去4-3关卡，那么应该输入43）：");
-						scanf("%d",&Checkpoint);
-						if(Checkpoint<11)Checkpoint=11;
-						Checkpoint-=10;
-						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,Checkpoint,4,0x82C,0x24),"冒险模式关卡");
+						scanf("%d",&_tempValue);
+						_tempValue=limit(_tempValue,11,99);
+						_tempValue-=10;
+						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,_tempValue,4,0x82C,0x24),"冒险模式关卡");
 					}
 					break;
 				case '2':
-					if(openMod()){
-						int MiniGame;
+					if(openModify()){
 						printf("\n需要先进入任意关卡然后点击菜单后（一定要这么做，否则会崩溃或者修改无效，此外重新开始会清除该模式下的存档，请注意备份存档），修改关卡代码然后点击重新开始，如果不重新开始的话将会产生混乱关卡的效果\n");
 						printf("请输入要进入的迷你游戏ID（ID可通过查询【!】菜单的关卡代码（1~70））：");
-						scanf("%d",&MiniGame);
-						if(MiniGame<1)MiniGame=1;
-						if(MiniGame>70)MiniGame=70;
-						cheatMsg(writeMemory(hProcess,0x006A9EC0,1,MiniGame,4,0x7F8),"小游戏跳关");
+						scanf("%d",&_tempValue);
+						_tempValue=limit(_tempValue,1,70);
+						cheatMsg(writeMemory(hProcess,0x006A9EC0,1,_tempValue,4,0x7F8),"小游戏跳关");
 					}
 					break;
 				default :
@@ -285,11 +281,11 @@ void Choice(){
 			break;
 		//植物修改
 		case 'c':
-			if(!openMod()){
+			if(!openModify()){
 				pause();
 				break;
 			}
-
+			
 			getchar();
 			color(14);
 			printf("\n已进入【植物修改】菜单，请选择子选项：");
@@ -297,7 +293,7 @@ void Choice(){
 			color(13);
 			switch(command){
 				case '1':
-					if(openMod()){
+					if(openModify()){
 						if(anyPosition==0){
 							cheatMsg(writeMemory(hProcess,0x0040FE30,0,0x81,1)&&writeMemory(hProcess,0x00438E40,0,0xEB,1)&&writeMemory(hProcess,0x0042A2D9,0,0x8D,1),"开启重叠放置");
 						}else{
@@ -307,7 +303,7 @@ void Choice(){
 					}
 					break;
 				case '2':
-					if(openMod()){
+					if(openModify()){
 						cheatMsg(writeMemory(hProcess,0x0041D7D0,0,0xC301B0,3)&&writeMemory(hProcess,0x0040E477,0,0xEB,1),"紫卡种植无限制");
 					}
 					break;
@@ -317,11 +313,11 @@ void Choice(){
 			break;
 		//僵尸修改
 		case 'd':
-			if(!openMod()){
+			if(!openModify()){
 				pause();
 				break;
 			}
-
+			
 			getchar();
 			color(14);
 			printf("\n已进入【僵尸修改】菜单，请选择子选项：");
@@ -329,21 +325,21 @@ void Choice(){
 			color(13);
 			switch(command){
 				case '1':
-					if(openMod()){
+					if(openModify()){
 						int z_i;
 						int kill=0;
-						int Z_Disappear;
+						int z_status;
 						//pvz最大允许的僵尸数量是1024个，所以循环1024次就可以秒杀所有僵尸了
 						for(z_i=0;z_i<1024;z_i++){
-							Z_Disappear=readMemory(hProcess,0x006A9EC0,3,4,0x768,0x90,z_i*0x15C+0xEC);
-							//printf("僵尸状态：%d",Z_Disappear);
-							if(Z_Disappear==0)kill=writeMemory(hProcess,0x006A9EC0,3,3,4,0x768,0x90,z_i*0x15C+0x28);
+							z_status=readMemory(hProcess,0x006A9EC0,3,4,0x768,0x90,z_i*0x15C+0xEC);
+							//printf("僵尸状态：%d",z_status);
+							if(z_status==0)kill=writeMemory(hProcess,0x006A9EC0,3,3,4,0x768,0x90,z_i*0x15C+0x28);
 						}
 						cheatMsg(kill,"秒杀全部僵尸");
 					}
 					break;
 				case '2':
-					if(openMod()){
+					if(openModify()){
 						if(little==0){
 							cheatMsg(writeMemory(hProcess,0x00523ED5,0,0xEB,1),"开启小僵尸特效");
 						}else{
@@ -358,11 +354,11 @@ void Choice(){
 			break;
 		//花园修改
 		case 'e':
-			if(!openMod()){
+			if(!openModify()){
 				pause();
 				break;
 			}
-
+			
 			getchar();
 			color(14);
 			printf("\n已进入【花园修改】菜单，请选择子选项：");
@@ -370,23 +366,20 @@ void Choice(){
 			color(13);
 			switch(command){
 				case '1':
-					if(openMod()){
-						int Tree;
+					if(openModify()){
 						printf("\n请输入要修改的智慧树高度：");
-						scanf("%d",&Tree);
-						if(Tree<0)Tree=0;
-						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,Tree,4,0x82C,0xF4),"智慧树高度");
+						scanf("%d",&_tempValue);
+						_tempValue=limit(_tempValue,0,2147483647);
+						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,_tempValue,4,0x82C,0xF4),"智慧树高度");
 					}
 					break;
 				case '2':
-					if(openMod()){
-						int Chocolates;
+					if(openModify()){
 						printf("\n请输入要修改的巧克力数量：");
-						scanf("%d",&Chocolates);
-						if(Chocolates<0)Chocolates=0;
-						if(Chocolates>999)Chocolates=999;
-						Chocolates+=1000;
-						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,Chocolates,4,0x82C,0x228),"巧克力数量");
+						scanf("%d",&_tempValue);
+						_tempValue=limit(_tempValue,0,999);
+						_tempValue+=1000;
+						cheatMsg(writeMemory(hProcess,0x006A9EC0,2,_tempValue,4,0x82C,0x228),"巧克力数量");
 					}
 					break;
 				default :
@@ -395,11 +388,11 @@ void Choice(){
 			break;
 		//其他修改
 		case 'f':
-			if(!openMod()){
+			if(!openModify()){
 				pause();
 				break;
 			}
-
+			
 			getchar();
 			color(14);
 			printf("\n已进入【其他修改】菜单，请选择子选项：");
@@ -407,12 +400,12 @@ void Choice(){
 			color(13);
 			switch(command){
 				case '1':
-					if(openMod()){
+					if(openModify()){
 						cheatMsg(writeMemory(hProcess,0x0044E5CC,0,0x0033B866,4),"花瓶透视开启");
 					}
 					break;
 				case '2':
-					if(openMod()){
+					if(openModify()){
 						cheatMsg(writeMemory(hProcess,0x0042DF5D,0,0x38,1),"显示隐藏小游戏");
 					}
 					break;
@@ -437,7 +430,7 @@ void Choice(){
 			showOpenCheat();
 			break;
 		case 'A':
-			printf("\n关于：本程序是植物大战僵尸（PlantsVsZombies）的修改器，使用Dev-C++开发编译\n修改器作者：流水“渺渺\n感谢大家的使用，有任何疑问和bug可以反馈给我。\n\n");
+			printf("\n关于：本程序是植物大战僵尸（PlantsVsZombies）的修改器，使用【Dev-C++】开发编译\n修改器作者：流水“渺渺\n感谢大家的使用，有任何疑问和bug可以反馈给我\n\n");
 			pause();
 			break;
 		case 'E':
@@ -446,6 +439,7 @@ void Choice(){
 		default :
 			noOperation();
 	}
+	
 	//暂缓输入
 	getchar();
 }
@@ -459,7 +453,7 @@ void cheatMsg(int isSuccess,const char msg[]){
 		color(12);
 		printf("\n修改【%s】失败！\n",msg);
 	}
-
+	
 	pause();
 }
 
@@ -467,7 +461,7 @@ void cheatMsg(int isSuccess,const char msg[]){
 void noOperation(){
 	color(14);
 	printf("\n找不到相关操作！请重新输入操作按键！\n");
-
+	
 	pause();
 }
 
@@ -497,10 +491,10 @@ void showMiniGameList(){
 							"我是僵尸","我也是僵尸","你能铲了它么","完全傻了","死亡飞艇",
 							"我烂了","僵尸摇摆","三连击","你的所有大脑都是属于我的","我是僵尸无尽版"
 	};
-
-	int gameLen=sizeof(MiniGame)/sizeof(MiniGame[0]);
+	
+	int gameLength=sizeof(MiniGame)/sizeof(MiniGame[0]);
 	int i;
-	for(i=0;i<gameLen;i++){
+	for(i=0;i<gameLength;i++){
 		//标记出错关卡
 		if(i==37||i==42||i==49){
 			color(12);
@@ -510,7 +504,7 @@ void showMiniGameList(){
 		}
 		printf("%d.%s\n",i+1,MiniGame[i]);
 	}
-
+	
 	pause();
 }
 
@@ -525,7 +519,7 @@ void cheatCode(){
 	printf("dance ------- 让僵尸摆动身体跳舞（动次打次 动次打次）（需要智慧树达到500米）\n");
 	printf("sukhbir ----- 切换僵尸呼唤大脑时的叫声φ(>ω<*) \n");
 	printf("pinata ------ 僵尸死后散落一地的糖果（需要智慧树达到1000米）\n");
-
+	
 	pause();
 }
 
@@ -533,7 +527,7 @@ void cheatCode(){
 void showOpenCheat(){
 	color(11);
 	printf("\n当前开启的修改项目\n\n");
-
+	
 	color(13);
 	int sign=0;
 	if(backStage==0){
@@ -548,14 +542,21 @@ void showOpenCheat(){
 		printf("小僵尸特效已启用\n");
 		sign=1;
 	}
-
+	
 	if(sign==0)printf("目前没有修改项目正在启动\n");
-
+	
 	pause();
 }
+
+//限制数据大小
+int limit(int value,int min,int max){
+	if(value<min)return min;
+	if(value>max)return max;
+	
+	return value;
+} 
 
 //更改文字颜色
 void color(int c){
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),c);
 }
-

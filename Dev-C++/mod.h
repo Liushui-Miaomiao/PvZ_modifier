@@ -50,7 +50,7 @@ DWORD getMemory(HANDLE hProcess,DWORD BaseAddr,int level,SIZE_T Size,va_list arg
 	
 	va_end(argptr);
 	
-	#if isDebug
+	#if DEBUG
 		int value;
 		ReadProcessMemory(hProcess,(LPVOID)tempAddr,&value,(SIZE_T)Size,NULL);
 		printf("偏移地址为：%x，读取的值为：%d\n",tempAddr,value);
