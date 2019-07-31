@@ -10,7 +10,7 @@ BOOL FindProcessPid(LPCSTR ProcessName,DWORD &dwPid){
 	//获取系统中所有进程的快照
 	hProcessSnap=CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
 	if(hProcessSnap==INVALID_HANDLE_VALUE){
-		return(FALSE);
+		return FALSE;
 	}
 	
 	pe32.dwSize=sizeof(PROCESSENTRY32);
@@ -18,7 +18,7 @@ BOOL FindProcessPid(LPCSTR ProcessName,DWORD &dwPid){
 	if(!Process32First(hProcessSnap,&pe32)){
 		//清除快照对象
 		CloseHandle(hProcessSnap);
-		return(FALSE);
+		return FALSE;
 	}
 	
 	BOOL bRet=FALSE;
@@ -76,7 +76,7 @@ DWORD readMemory(HANDLE hProcess,DWORD BaseAddr,int level,SIZE_T Size,...){
 }
 
 //句柄，基址，偏移级数，写入值，数值类型，偏移地址参数列
-DWORD writeMemory(HANDLE hProcess,DWORD BaseAddr,int level,DWORD value,SIZE_T Size,...){
+BOOL writeMemory(HANDLE hProcess,DWORD BaseAddr,int level,DWORD value,SIZE_T Size,...){
 	va_list argptr;
 	va_start(argptr,Size);
 	

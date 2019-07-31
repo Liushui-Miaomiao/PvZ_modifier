@@ -17,21 +17,21 @@ DWORD Pid;
 HANDLE hProcess=0;
 
 //进程是否已经被打开
-int isRun=0;
+BOOL isRun=FALSE;
 //是否后台运行标识
-int backStage=1;
+BOOL backStage=TRUE;
 //是否重叠放置标识
-int anyPosition=0;
+BOOL anyPosition=FALSE;
 //是否开启小僵尸特效标识
-int little=0;
+BOOL isLittle=FALSE;
 
 /*函数声明*/
-int openGameProcess();
-int openModify();
+BOOL openGameProcess();
+BOOL openModify();
 void menu();
 void upData();
 void Choice();
-void cheatMsg(int isSuccess,const char msg[]);
+void cheatMsg(BOOL isSuccess,const char msg[]);
 void noOperation();
 void pause();
 void showMiniGameList();
@@ -60,7 +60,7 @@ int main(void){
 }
 
 //打开进程
-int openGameProcess(){
+BOOL openGameProcess(){
 	color(14);
 	printf("正在打开进程...\n");
 	
@@ -73,11 +73,11 @@ int openGameProcess(){
 			printf("\n成功打开游戏进程[%s]！进程句柄：%d\n",processName,hProcess);
 			//检测版本是否为英文原版和汉化一代二代
 			if(readMemory(hProcess,0x42748E,0,4)==0xFF563DE8){
-				return 1;
+				return TRUE;
 			}else{
 				color(14);
 				printf("\n不支持的游戏版本！目前仅支持英文原版和汉化一代/二代\n");
-				return 0;
+				return FALSE;
 			}
 		}else{
 			color(12);
@@ -88,18 +88,18 @@ int openGameProcess(){
 		printf("未找到游戏进程：%s\n",processName);
 	}
 	
-	return 0;
+	return FALSE;
 }
 
 //修改器是否已经读入游戏进程
-int openModify(){
+BOOL openModify(){
 	if(hProcess==0){
 		color(14);
 		printf("\n请先打开修改器搜索游戏句柄！\n");
-		return 0;
+		return FALSE;
 	}
 	
-	return 1;
+	return TRUE;
 }
 
 //主菜单
@@ -213,13 +213,11 @@ void Choice(){
 					}
 					break;
 				case '3':
-					if(openModify()){
-						cheatMsg(writeMemory(hProcess,0x00487296,0,0x1477,2),"卡牌无冷却");
-					}
+					if(openModify())cheatMsg(writeMemory(hProcess,0x00487296,0,0x1477,2),"卡牌无冷却");
 					break;
 				case '4':
 					if(openModify()){
-						if(backStage==1){
+						if(backStage){
 							cheatMsg(writeMemory(hProcess,0x0054EBEF,0,0xC3,1),"取消后台");
 						}else{
 							cheatMsg(writeMemory(hProcess,0x0054EBEF,0,0x57,1),"恢复后台");
@@ -236,9 +234,7 @@ void Choice(){
 					}
 					break;
 				case '6':
-					if(openModify()){
-						cheatMsg(writeMemory(hProcess,0x0043158F,0,0xEB,1),"自动收集开启");
-					}
+					if(openModify())cheatMsg(writeMemory(hProcess,0x0043158F,0,0xEB,1),"自动收集开启");
 					break;
 				default :
 					noOperation();
@@ -294,7 +290,7 @@ void Choice(){
 			switch(command){
 				case '1':
 					if(openModify()){
-						if(anyPosition==0){
+						if(!anyPosition){
 							cheatMsg(writeMemory(hProcess,0x0040FE30,0,0x81,1)&&writeMemory(hProcess,0x00438E40,0,0xEB,1)&&writeMemory(hProcess,0x0042A2D9,0,0x8D,1),"开启重叠放置");
 						}else{
 							cheatMsg(writeMemory(hProcess,0x0040FE30,0,0x84,1)&&writeMemory(hProcess,0x00438E40,0,0x74,1)&&writeMemory(hProcess,0x0042A2D9,0,0x84,1),"取消重叠放置");
@@ -303,9 +299,7 @@ void Choice(){
 					}
 					break;
 				case '2':
-					if(openModify()){
-						cheatMsg(writeMemory(hProcess,0x0041D7D0,0,0xC301B0,3)&&writeMemory(hProcess,0x0040E477,0,0xEB,1),"紫卡种植无限制");
-					}
+					if(openModify())cheatMsg(writeMemory(hProcess,0x0041D7D0,0,0xC301B0,3)&&writeMemory(hProcess,0x0040E477,0,0xEB,1),"紫卡种植无限制");
 					break;
 				default :
 					noOperation();
@@ -327,8 +321,8 @@ void Choice(){
 				case '1':
 					if(openModify()){
 						int z_i;
-						int kill=0;
-						int z_status;
+						BOOL kill=FALSE;
+						DWORD z_status;
 						//pvz最大允许的僵尸数量是1024个，所以循环1024次就可以秒杀所有僵尸了
 						for(z_i=0;z_i<1024;z_i++){
 							z_status=readMemory(hProcess,0x006A9EC0,3,4,0x768,0x90,z_i*0x15C+0xEC);
@@ -340,12 +334,12 @@ void Choice(){
 					break;
 				case '2':
 					if(openModify()){
-						if(little==0){
+						if(!isLittle){
 							cheatMsg(writeMemory(hProcess,0x00523ED5,0,0xEB,1),"开启小僵尸特效");
 						}else{
 							cheatMsg(writeMemory(hProcess,0x00523ED5,0,0x74,1),"关闭小僵尸特效");
 						}
-						little=!little;
+						isLittle=!isLittle;
 					}
 					break;
 				default :
@@ -400,14 +394,10 @@ void Choice(){
 			color(13);
 			switch(command){
 				case '1':
-					if(openModify()){
-						cheatMsg(writeMemory(hProcess,0x0044E5CC,0,0x0033B866,4),"花瓶透视开启");
-					}
+					if(openModify())cheatMsg(writeMemory(hProcess,0x0044E5CC,0,0x0033B866,4),"花瓶透视开启");
 					break;
 				case '2':
-					if(openModify()){
-						cheatMsg(writeMemory(hProcess,0x0042DF5D,0,0x38,1),"显示隐藏小游戏");
-					}
+					if(openModify())cheatMsg(writeMemory(hProcess,0x0042DF5D,0,0x38,1),"显示隐藏小游戏");
 					break;
 				default :
 					noOperation();
@@ -445,7 +435,7 @@ void Choice(){
 }
 
 //修改信息
-void cheatMsg(int isSuccess,const char msg[]){
+void cheatMsg(BOOL isSuccess,const char msg[]){
 	if(isSuccess){
 		color(10);
 		printf("\n修改【%s】成功！\n",msg);
@@ -469,12 +459,14 @@ void noOperation(){
 void pause(){
 	color(14);
 	printf("\n按任意键继续……\n");
+	
 	getch();
 }
 
 //迷你游戏代码
 void showMiniGameList(){
 	color(11);
+	
 	printf("\n小游戏代码（红色加“*”标志的关卡不能跳关/混乱，会造成崩溃退出）\n\n");
 	const char *MiniGame[]={"生存模式：白天","生存模式：黑夜","生存模式：泳池","生存模式：浓雾","生存模式：屋顶",
 							"生存模式：白天（困难）","生存模式：黑夜（困难）","生存模式：泳池（困难）","生存模式：浓雾（困难）","生存模式：屋顶（困难）",
@@ -529,21 +521,21 @@ void showOpenCheat(){
 	printf("\n当前开启的修改项目\n\n");
 	
 	color(13);
-	int sign=0;
-	if(backStage==0){
+	BOOL sign=FALSE;
+	if(!backStage){
 		printf("取消后台功能已启用\n");
-		sign=1;
+		sign=TRUE;
 	}
-	if(anyPosition==1){
+	if(anyPosition){
 		printf("重叠放置功能已启用\n");
-		sign=1;
+		sign=TRUE;
 	}
-	if(little==1){
+	if(isLittle){
 		printf("小僵尸特效已启用\n");
-		sign=1;
+		sign=TRUE;
 	}
 	
-	if(sign==0)printf("目前没有修改项目正在启动\n");
+	if(!sign)printf("目前没有修改项目正在启动\n");
 	
 	pause();
 }
