@@ -2,19 +2,17 @@
 
 #include "headgr.h"
 
-extern char processName[];
-
-extern BOOL isRun;
-extern BOOL backStage;
-extern BOOL anyPosition;
-extern BOOL isLittle; 
+extern bool isRun;
+extern bool backStageRun;
+extern bool anyPosition;
+extern bool isLittle; 
 
 /*主菜单*/
 void menu(void){
 	setColor(15);
 	printf("\n————————————————————\n");
 	printf("【植物大战僵尸】 C语言修改器\n\n");
-	printf("O：重新打开/搜索进程[%s]\n",processName);
+	printf("O：重新打开/搜索进程\n");
 	if(isRun){
 		#if DEBUG
 			printf("T：测试代码（Debug）\n");
@@ -144,14 +142,14 @@ void noOperation(void){
 
 /*关于信息*/
 void about(void){
-	printf("\n关于：本程序是植物大战僵尸（PlantsVsZombies）的修改器，使用【Dev-C++】开发编译");
+	printf("\n关于：本程序是植物大战僵尸（Plants vs. Zombies）的修改器，使用【Dev-C++】开发编译");
 	printf("\n修改器作者：流水“渺渺\n感谢大家的使用，有任何疑问和bug可以反馈给我\n\n");
 	
 	pause();
 }
 
 /*显示修改提示信息*/
-void cheatMsg(BOOL isSuccess,const char msg[]){
+void cheatMsg(bool isSuccess,const char msg[]){
 	if(isSuccess){
 		setColor(10);
 		printf("\n修改【%s】成功！\n",msg);
@@ -170,21 +168,29 @@ void showOpenCheat(void){
 	
 	setColor(13);
 	
-	BOOL sign=FALSE;
-	if(!backStage){
+	bool sign=false;
+	if(backStageRun){
 		printf("取消后台功能已启用\n");
-		sign=TRUE;
+		sign=true;
 	}
 	if(anyPosition){
 		printf("重叠放置功能已启用\n");
-		sign=TRUE;
+		sign=true;
 	}
 	if(isLittle){
 		printf("小僵尸特效已启用\n");
-		sign=TRUE;
+		sign=true;
 	}
 	
 	if(!sign)printf("目前没有修改项目正在启动\n");
 	
 	pause();
 }
+
+/*显示进程名称*/
+void showProcessName(const char msg1[],const char msg2[]){
+	printf("%s",msg1);
+	printf(PROCESS_NAME);
+	printf("%s",msg2);
+}
+ 

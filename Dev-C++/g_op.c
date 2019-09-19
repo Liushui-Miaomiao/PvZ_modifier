@@ -2,58 +2,76 @@
 
 #include "headgr.h"
 
-extern char processName[];
 extern DWORD Pid;
 extern HANDLE hProcess;
 extern int command;
 
-extern BOOL isRun;
-extern BOOL backStage;
-extern BOOL anyPosition;
-extern BOOL isLittle; 
+extern bool isRun;
+extern bool backStageRun;
+extern bool anyPosition;
+extern bool isLittle; 
+
+/*初始化修改器*/
+void initModifier(void){
+	SetConsoleTitle("【植物大战僵尸】 C语言修改器 v0.22");
+	isRun=openGameProcess();
+}
 
 /*打开游戏进程*/
-BOOL openGameProcess(void){
+bool openGameProcess(void){
 	setColor(14);
 	printf("正在打开进程...\n");
 	
 	//寻找进程名称并返回pid
-	if(FindProcessPid(processName,Pid)){
-		printf("[%s][Pid：%d]\n",processName,Pid);
-		hProcess=OpenProcess(PROCESS_ALL_ACCESS,FALSE,Pid);
+	if(FindProcessPid(PROCESS_NAME,Pid)){
+		showProcessName("[","]");
+		printf("[Pid：%d]\n",Pid);
+		
+		hProcess=OpenProcess(PROCESS_ALL_ACCESS,false,Pid);
 		
 		if (hProcess!=0){
 			setColor(10);
-			printf("\n成功打开游戏进程[%s]！进程句柄：%d\n",processName,hProcess);
+			showProcessName("\n成功打开游戏进程[","]！");
+			printf("进程句柄：%d\n",hProcess);
 			
 			if(readMemory(hProcess,0x42748E,0,4)==0xFF563DE8){
-				return TRUE;
+				if(readMemory(hProcess,0x0054EBEF,0,1)==0xFF563DC3){
+					backStageRun=true;
+				}
+				if(readMemory(hProcess,0x0040FE30,0,1)==0xFF563D81&&readMemory(hProcess,0x00438E40,0,1)==0xFF563DEB&&readMemory(hProcess,0x0042A2D9,0,1)==0xFF563D8D){
+					anyPosition=true;
+				}
+				if(readMemory(hProcess,0x00523ED5,0,1)==0xFF563DEB){
+					isLittle=true;
+				}
+				
+				return true;
 			}else{
 				setColor(14);
-				printf("\n不支持的游戏版本！目前仅支持英文原版和汉化一代/二代\n");
-				return FALSE;
+				printf("\n不支持的游戏版本！\n");
+				return false;
 			}
 		}else{
 			setColor(12);
-			printf("\n打开游戏进程[%s]失败\n",processName);
+			showProcessName("\n打开游戏进程[","]失败！\n");
 		}
 	}else{
 		setColor(14);
-		printf("未找到游戏进程：%s\n",processName);
+		showProcessName("未找到游戏进程：","\n");
 	}
 	
-	return FALSE;
+	return false;
 }
 
 /*是否已经读取游戏进程*/
-BOOL openModify(void){
+bool openModify(void){
 	if(hProcess==0){
 		setColor(14);
 		printf("\n请先打开修改器搜索游戏句柄！\n");
-		return FALSE;
+		return false;
 	}
 	
-	return TRUE;
+	return true;
 }
 
 /*选择流程*/
@@ -66,12 +84,13 @@ void Choice(void){
 	switch(command){
 		case 'O':
 			isRun=openGameProcess();
+			
 			pause();
 			break;
 		#if DEBUG
 			case 'T':
-				if(!openModify()){
-					printf("\n当前值为：");
+				if(openModify()){
+					
 				}
 				break;
 		#endif
@@ -110,12 +129,12 @@ void Choice(void){
 					break;
 				case '4':
 					if(openModify()){
-						if(backStage){
+						if(!backStageRun){
 							cheatMsg(writeMemory(hProcess,0x0054EBEF,0,0xC3,1),"取消后台");
 						}else{
 							cheatMsg(writeMemory(hProcess,0x0054EBEF,0,0x57,1),"恢复后台");
 						}
-						backStage=!backStage;
+						backStageRun=!backStageRun;
 					}
 					break;
 				case '5':
@@ -158,7 +177,8 @@ void Choice(void){
 					break;
 				case '2':
 					if(openModify()){
-						printf("\n需要先进入任意关卡然后点击菜单后（一定要这么做，否则会崩溃或者修改无效，此外重新开始会清除该模式下的存档，请注意备份存档），修改关卡代码然后点击重新开始，如果不重新开始的话将会产生混乱关卡的效果\n");
+						printf("\n需要先进入任意关卡然后点击菜单后（一定要这么做，否则会崩溃或者修改无效，此外重新开始会清除该模式下的存档，请注意备份存档），");
+						printf("修改关卡代码然后点击重新开始，如果不重新开始的话将会产生混乱关卡的效果\n");
 						printf("请输入要进入的迷你游戏ID（ID可通过查询【!】菜单的关卡代码（1~70））：");
 						scanf("%d",&_tempValue);
 						_tempValue=limit(_tempValue,1,70);
@@ -216,14 +236,14 @@ void Choice(void){
 			switch(command){
 				case '1':
 					if(openModify()){
-						int z_i;
-						BOOL kill=FALSE;
-						DWORD z_status;
+						int i;
+						bool kill=false;
+						printf("僵尸数量：%d\n",readMemory(hProcess,0x006A9EC0,2,4,0x768,0xA0));
 						/*pvz最多有1024只僵尸*/
-						for(z_i=0;z_i<1024;z_i++){
-							z_status=readMemory(hProcess,0x006A9EC0,3,4,0x768,0x90,z_i*0x15C+0xEC);
-							//printf("僵尸状态：%d",z_status);
-							if(z_status==0)kill=writeMemory(hProcess,0x006A9EC0,3,3,4,0x768,0x90,z_i*0x15C+0x28);
+						for(i=0;i<1024;i++){
+							if(readMemory(hProcess,0x006A9EC0,3,4,0x768,0x90,i*0x15C+0xEC)==0){
+								kill=writeMemory(hProcess,0x006A9EC0,3,3,4,0x768,0x90,i*0x15C+0x28);
+							}
 						}
 						cheatMsg(kill,"秒杀全部僵尸");
 					}
@@ -321,7 +341,7 @@ void Choice(void){
 			about();
 			break;
 		case 'E':
-			exit(0);
+			close();
 			break;
 		default :
 			noOperation();

@@ -11,7 +11,7 @@ static DWORD getMemory(HANDLE hProcess,DWORD BaseAddr,int level,SIZE_T Size,va_l
 	int i;
 	if(level!=0){
 		for(i=0;i<level;i++){
-			ReadProcessMemory(hProcess,(LPVOID)tempAddr,&tempAddr,(SIZE_T)Size,NULL);
+			ReadProcessMemory(hProcess,(LPVOID)tempAddr,(LPVOID)&tempAddr,(SIZE_T)Size,NULL);
 			tempAddr+=va_arg(argptr,DWORD);
 		}
 	}
@@ -20,7 +20,7 @@ static DWORD getMemory(HANDLE hProcess,DWORD BaseAddr,int level,SIZE_T Size,va_l
 	
 	#if DEBUG
 		int value;
-		ReadProcessMemory(hProcess,(LPVOID)tempAddr,&value,(SIZE_T)Size,NULL);
+		ReadProcessMemory(hProcess,(LPVOID)tempAddr,(LPVOID)&value,(SIZE_T)Size,NULL);
 		printf("偏移地址为：%x，读取的值为：%d\n",tempAddr,value);
 	#endif
 	
@@ -35,16 +35,16 @@ DWORD readMemory(HANDLE hProcess,DWORD BaseAddr,int level,SIZE_T Size,...){
 	DWORD finalAddr;
 	finalAddr=getMemory(hProcess,BaseAddr,level,Size,argptr);
 	
-	int value;
-	ReadProcessMemory(hProcess,(LPVOID)finalAddr,&value,(SIZE_T)Size,NULL);
-	
 	va_end(argptr);
+	
+	int value;
+	ReadProcessMemory(hProcess,(LPVOID)finalAddr,(LPVOID)&value,(SIZE_T)Size,NULL);
 	
 	return value;
 }
 
 /*句柄，基址，偏移级数，写入值，数值类型，偏移地址参数列*/
-BOOL writeMemory(HANDLE hProcess,DWORD BaseAddr,int level,DWORD value,SIZE_T Size,...){
+bool writeMemory(HANDLE hProcess,DWORD BaseAddr,int level,DWORD value,SIZE_T Size,...){
 	va_list argptr;
 	va_start(argptr,Size);
 	
@@ -53,5 +53,5 @@ BOOL writeMemory(HANDLE hProcess,DWORD BaseAddr,int level,DWORD value,SIZE_T Siz
 	
 	va_end(argptr);
 	
-	return WriteProcessMemory(hProcess,(LPVOID)finalAddr,&value,(SIZE_T)Size,NULL);
+	return WriteProcessMemory(hProcess,(LPVOID)finalAddr,(LPVOID)&value,(SIZE_T)Size,NULL);
 }

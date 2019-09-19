@@ -1,16 +1,16 @@
-# Project: pvz_Modify
+# Project: PvZ_modifier
 # Makefile created by Dev-C++ 5.11
 
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-RES      = pvz_Modify_private.res
-OBJ      = pvz_Modify.o pm_op.o p_op.o g_op.o g_msg.o $(RES)
-LINKOBJ  = pvz_Modify.o pm_op.o p_op.o g_op.o g_msg.o $(RES)
+RES      = PvZ_modifier_private.res
+OBJ      = PvZ_modifier.o pm_op.o p_op.o g_op.o g_msg.o $(RES)
+LINKOBJ  = PvZ_modifier.o pm_op.o p_op.o g_op.o g_msg.o $(RES)
 LIBS     = -L"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -m32
 INCS     = -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
-BIN      = pvz_Modify.exe
+BIN      = PvZ_modifier.exe
 CXXFLAGS = $(CXXINCS) -m32
 CFLAGS   = $(INCS) -m32
 RM       = rm.exe -f
@@ -25,8 +25,8 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-pvz_Modify.o: pvz_Modify.c
-	$(CPP) -c pvz_Modify.c -o pvz_Modify.o $(CXXFLAGS)
+PvZ_modifier.o: PvZ_modifier.c
+	$(CPP) -c PvZ_modifier.c -o PvZ_modifier.o $(CXXFLAGS)
 
 pm_op.o: pm_op.c
 	$(CPP) -c pm_op.c -o pm_op.o $(CXXFLAGS)
@@ -40,6 +40,6 @@ g_op.o: g_op.c
 g_msg.o: g_msg.c
 	$(CPP) -c g_msg.c -o g_msg.o $(CXXFLAGS)
 
-pvz_Modify_private.res: pvz_Modify_private.rc 
-	$(WINDRES) -i pvz_Modify_private.rc -F pe-i386 --input-format=rc -o pvz_Modify_private.res -O coff 
+PvZ_modifier_private.res: PvZ_modifier_private.rc 
+	$(WINDRES) -i PvZ_modifier_private.rc -F pe-i386 --input-format=rc -o PvZ_modifier_private.res -O coff 
 
