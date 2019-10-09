@@ -6,10 +6,10 @@ extern DWORD Pid;
 extern HANDLE hProcess;
 extern int command;
 
-extern bool isRun;
-extern bool backStageRun;
-extern bool anyPosition;
-extern bool isLittle; 
+extern BOOL isRun;
+extern BOOL backStageRun;
+extern BOOL anyPosition;
+extern BOOL isLittle; 
 
 /*初始化修改器*/
 void initModifier(void){
@@ -18,7 +18,7 @@ void initModifier(void){
 }
 
 /*打开游戏进程*/
-bool openGameProcess(void){
+BOOL openGameProcess(void){
 	setColor(14);
 	printf("正在打开进程...\n");
 	
@@ -27,7 +27,7 @@ bool openGameProcess(void){
 		showProcessName("[","]");
 		printf("[Pid：%d]\n",Pid);
 		
-		hProcess=OpenProcess(PROCESS_ALL_ACCESS,false,Pid);
+		hProcess=OpenProcess(PROCESS_ALL_ACCESS,FALSE,Pid);
 		
 		if (hProcess!=0){
 			setColor(10);
@@ -36,20 +36,20 @@ bool openGameProcess(void){
 			
 			if(readMemory(hProcess,0x42748E,0,4)==0xFF563DE8){
 				if(readMemory(hProcess,0x0054EBEF,0,1)==0xFF563DC3){
-					backStageRun=true;
+					backStageRun=TRUE;
 				}
 				if(readMemory(hProcess,0x0040FE30,0,1)==0xFF563D81&&readMemory(hProcess,0x00438E40,0,1)==0xFF563DEB&&readMemory(hProcess,0x0042A2D9,0,1)==0xFF563D8D){
-					anyPosition=true;
+					anyPosition=TRUE;
 				}
 				if(readMemory(hProcess,0x00523ED5,0,1)==0xFF563DEB){
-					isLittle=true;
+					isLittle=TRUE;
 				}
 				
-				return true;
+				return TRUE;
 			}else{
 				setColor(14);
 				printf("\n不支持的游戏版本！\n");
-				return false;
+				return FALSE;
 			}
 		}else{
 			setColor(12);
@@ -60,18 +60,18 @@ bool openGameProcess(void){
 		showProcessName("未找到游戏进程：","\n");
 	}
 	
-	return false;
+	return FALSE;
 }
 
 /*是否已经读取游戏进程*/
-bool openModify(void){
+BOOL openModify(void){
 	if(hProcess==0){
 		setColor(14);
 		printf("\n请先打开修改器搜索游戏句柄！\n");
-		return false;
+		return FALSE;
 	}
 	
-	return true;
+	return TRUE;
 }
 
 /*选择流程*/
@@ -237,7 +237,7 @@ void Choice(void){
 				case '1':
 					if(openModify()){
 						int i;
-						bool kill=false;
+						BOOL kill=FALSE;
 						printf("僵尸数量：%d\n",readMemory(hProcess,0x006A9EC0,2,4,0x768,0xA0));
 						/*pvz最多有1024只僵尸*/
 						for(i=0;i<1024;i++){

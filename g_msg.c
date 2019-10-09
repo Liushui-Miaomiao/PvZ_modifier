@@ -2,10 +2,10 @@
 
 #include "headgr.h"
 
-extern bool isRun;
-extern bool backStageRun;
-extern bool anyPosition;
-extern bool isLittle; 
+extern BOOL isRun;
+extern BOOL backStageRun;
+extern BOOL anyPosition;
+extern BOOL isLittle; 
 
 /*主菜单*/
 void menu(void){
@@ -149,7 +149,7 @@ void about(void){
 }
 
 /*显示修改提示信息*/
-void cheatMsg(bool isSuccess,const char msg[]){
+void cheatMsg(BOOL isSuccess,const char msg[]){
 	if(isSuccess){
 		setColor(10);
 		printf("\n修改【%s】成功！\n",msg);
@@ -168,18 +168,18 @@ void showOpenCheat(void){
 	
 	setColor(13);
 	
-	bool sign=false;
+	BOOL sign=FALSE;
 	if(backStageRun){
 		printf("取消后台功能已启用\n");
-		sign=true;
+		sign=TRUE;
 	}
 	if(anyPosition){
 		printf("重叠放置功能已启用\n");
-		sign=true;
+		sign=TRUE;
 	}
 	if(isLittle){
 		printf("小僵尸特效已启用\n");
-		sign=true;
+		sign=TRUE;
 	}
 	
 	if(!sign)printf("目前没有修改项目正在启动\n");

@@ -4,16 +4,16 @@ DWORD Pid;
 HANDLE hProcess=0;
 int command;
 
-bool isRun=false;
-bool backStageRun=false;
-bool anyPosition=false;
-bool isLittle=false; 
+BOOL isRun=FALSE;
+BOOL backStageRun=FALSE;
+BOOL anyPosition=FALSE;
+BOOL isLittle=FALSE; 
 
 /*Ö÷º¯Êý*/
 int main(void){
 	initModifier();
 	
-	while(true){
+	while(TRUE){
 		menu();
 		setColor(14);
 		

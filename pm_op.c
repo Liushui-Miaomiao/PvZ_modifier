@@ -44,7 +44,7 @@ DWORD readMemory(HANDLE hProcess,DWORD BaseAddr,int level,SIZE_T Size,...){
 }
 
 /*句柄，基址，偏移级数，写入值，数值类型，偏移地址参数列*/
-bool writeMemory(HANDLE hProcess,DWORD BaseAddr,int level,DWORD value,SIZE_T Size,...){
+BOOL writeMemory(HANDLE hProcess,DWORD BaseAddr,int level,DWORD value,SIZE_T Size,...){
 	va_list argptr;
 	va_start(argptr,Size);
 	
