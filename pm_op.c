@@ -4,54 +4,54 @@
 #include "headgr.h"
 
 /*句柄，基址，偏移级数，数值类型，偏移地址参数列*/
-static DWORD getMemory(HANDLE hProcess,DWORD BaseAddr,int level,SIZE_T Size,va_list argptr){
-	DWORD tempAddr;
-	tempAddr=BaseAddr;
+static DWORD getMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,SIZE_T size,va_list argptr){
+	DWORD dwTempAddr;
+	dwTempAddr=dwBaseAddr;
 	
 	int i;
-	if(level!=0){
-		for(i=0;i<level;i++){
-			ReadProcessMemory(hProcess,(LPVOID)tempAddr,(LPVOID)&tempAddr,(SIZE_T)Size,NULL);
-			tempAddr+=va_arg(argptr,DWORD);
+	if(iLevel!=0){
+		for(i=0;i<iLevel;i++){
+			ReadProcessMemory(hProcess,(LPVOID)dwTempAddr,(LPVOID)&dwTempAddr,(SIZE_T)size,NULL);
+			dwTempAddr+=va_arg(argptr,DWORD);
 		}
 	}
 	
 	va_end(argptr);
 	
 	#if DEBUG
-		int value;
-		ReadProcessMemory(hProcess,(LPVOID)tempAddr,(LPVOID)&value,(SIZE_T)Size,NULL);
-		printf("偏移地址为：%x，读取的值为：%d\n",tempAddr,value);
+		int iValue;
+		ReadProcessMemory(hProcess,(LPVOID)dwTempAddr,(LPVOID)&iValue,(SIZE_T)size,NULL);
+		printf("偏移地址为：%x，读取的值为：%d\n",dwTempAddr,iValue);
 	#endif
 	
-	return tempAddr;
+	return dwTempAddr;
 }
 
 /*句柄，基址，偏移级数，数值类型，偏移地址参数列*/
-DWORD readMemory(HANDLE hProcess,DWORD BaseAddr,int level,SIZE_T Size,...){
+DWORD readMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,SIZE_T size,...){
 	va_list argptr;
-	va_start(argptr,Size);
+	va_start(argptr,size);
 	
 	DWORD finalAddr;
-	finalAddr=getMemory(hProcess,BaseAddr,level,Size,argptr);
+	finalAddr=getMemory(hProcess,dwBaseAddr,iLevel,size,argptr);
 	
 	va_end(argptr);
 	
-	int value;
-	ReadProcessMemory(hProcess,(LPVOID)finalAddr,(LPVOID)&value,(SIZE_T)Size,NULL);
+	int iValue;
+	ReadProcessMemory(hProcess,(LPVOID)finalAddr,(LPVOID)&iValue,(SIZE_T)size,NULL);
 	
-	return value;
+	return iValue;
 }
 
 /*句柄，基址，偏移级数，写入值，数值类型，偏移地址参数列*/
-BOOL writeMemory(HANDLE hProcess,DWORD BaseAddr,int level,DWORD value,SIZE_T Size,...){
+BOOL writeMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwValue,SIZE_T size,...){
 	va_list argptr;
-	va_start(argptr,Size);
+	va_start(argptr,size);
 	
 	DWORD finalAddr;
-	finalAddr=getMemory(hProcess,BaseAddr,level,Size,argptr);
+	finalAddr=getMemory(hProcess,dwBaseAddr,iLevel,size,argptr);
 	
 	va_end(argptr);
 	
-	return WriteProcessMemory(hProcess,(LPVOID)finalAddr,(LPVOID)&value,(SIZE_T)Size,NULL);
+	return WriteProcessMemory(hProcess,(LPVOID)finalAddr,(LPVOID)&dwValue,(SIZE_T)size,NULL);
 }

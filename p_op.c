@@ -3,7 +3,7 @@
 #include "headgr.h"
 
 /*通过进程名返回pid*/
-BOOL FindProcessPid(LPCSTR ProcessName,DWORD &dwPid){
+BOOL findProcessPidByName(const char cProcessName[],DWORD &dwPid){
 	HANDLE hProcessSnap;
 	PROCESSENTRY32 pe32;
 	
@@ -14,14 +14,14 @@ BOOL FindProcessPid(LPCSTR ProcessName,DWORD &dwPid){
 	
 	pe32.dwSize=sizeof(PROCESSENTRY32);
 	
-	if(!Process32First(hProcessSnap,&pe32)){
+	if(Process32First(hProcessSnap,&pe32)==0){
 		CloseHandle(hProcessSnap);
 		return FALSE;
 	}
 	
 	BOOL bRet=FALSE;
 	do{
-		if(strcmp(ProcessName,pe32.szExeFile)==0){
+		if(strcmp(cProcessName,pe32.szExeFile)==0){
 			dwPid=pe32.th32ProcessID;
 			bRet=TRUE;
 			break;
@@ -29,15 +29,16 @@ BOOL FindProcessPid(LPCSTR ProcessName,DWORD &dwPid){
 	}while(Process32Next(hProcessSnap,&pe32));
 	
 	CloseHandle(hProcessSnap);
+	
 	return bRet;
 }
 
 /*置控制台颜色*/
-void setColor(int c){
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),c);
+void setColor(WORD wColor){
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),wColor);
 }
 
 /*退出程序*/
 void close(void){
-	exit(0);
+	exit(EXIT_SUCCESS);
 }

@@ -2,18 +2,18 @@
 
 #include "headgr.h"
 
-extern BOOL isRun;
-extern BOOL backStageRun;
-extern BOOL anyPosition;
-extern BOOL isLittle; 
+extern BOOL g_bIsRun;
+extern BOOL g_bIsBackStageRun;
+extern BOOL g_bIsAnyPosition;
+extern BOOL g_bIsLittleZombie; 
 
 /*主菜单*/
 void menu(void){
-	setColor(15);
+	setColor(BRIGHT_WHITE);
 	printf("\n————————————————————\n");
 	printf("【植物大战僵尸】 C语言修改器\n\n");
 	printf("O：重新打开/搜索进程\n");
-	if(isRun){
+	if(g_bIsRun){
 		#if DEBUG
 			printf("T：测试代码（Debug）\n");
 		#endif
@@ -56,8 +56,8 @@ void menu(void){
 }
 
 /*更新信息*/
-void upData(void){
-	setColor(9);
+void upDate(void){
+	setColor(BRIGHT_BLUE);
 	printf("\n更新公告\n\n");
 	printf("v0.1 [2019.03.04] 增加了最初的十个功能（1~0）\n");
 	
@@ -75,7 +75,7 @@ void upData(void){
 
 /*小代码*/
 void cheatCode(void){
-	setColor(5);
+	setColor(MAGENTA);
 	printf("\nPVZ小代码大全（培养智慧树到一定高度智慧树会告诉你的）\n\n");
 	printf("future ------ 僵尸戴上时尚太阳眼镜\n");
 	printf("mustache ---- 僵尸戴上两撇胡子\n");
@@ -90,10 +90,10 @@ void cheatCode(void){
 
 /*显示迷你游戏列表*/
 void showMiniGameList(void){
-	setColor(11);
+	setColor(BRIGHT_CYAN);
 	
 	printf("\n小游戏代码（红色加“*”标志的关卡不能跳关/混乱，会造成崩溃退出）\n\n");
-	const char *MiniGame[]={"生存模式：白天","生存模式：黑夜","生存模式：泳池","生存模式：浓雾","生存模式：屋顶",
+	const char *miniGameList[]={"生存模式：白天","生存模式：黑夜","生存模式：泳池","生存模式：浓雾","生存模式：屋顶",
 							"生存模式：白天（困难）","生存模式：黑夜（困难）","生存模式：泳池（困难）","生存模式：浓雾（困难）","生存模式：屋顶（困难）",
 							"生存模式：白天（无尽）","生存模式：黑夜（无尽）","生存模式：泳池（无尽）","生存模式：浓雾（无尽）","生存模式：屋顶（无尽）",
 							"植物僵尸","坚果保龄球模式","老虎机","雨中种植物","宝石迷阵",
@@ -110,15 +110,15 @@ void showMiniGameList(void){
 	};
 	
 	int i;
-	int gameLength=sizeof(MiniGame)/sizeof(MiniGame[0]);
-	for(i=0;i<gameLength;i++){
+	int iGameListLength=sizeof(miniGameList)/sizeof(miniGameList[0]);
+	for(i=0;i<iGameListLength;i++){
 		if(i==37||i==42||i==49){
-			setColor(12);
+			setColor(BRIGHT_RED);
 			printf("*");
 		}else{
-			setColor(11);
+			setColor(BRIGHT_CYAN);
 		}
-		printf("%d.%s\n",i+1,MiniGame[i]);
+		printf("%d.%s\n",i+1,miniGameList[i]);
 	}
 	
 	pause();
@@ -126,7 +126,7 @@ void showMiniGameList(void){
 
 /*暂停*/
 void pause(void){
-	setColor(14);
+	setColor(BRIGHT_YELLOW);
 	printf("\n按任意键继续……\n");
 	
 	getch();
@@ -134,7 +134,7 @@ void pause(void){
 
 /*找不到操作*/
 void noOperation(void){
-	setColor(14);
+	setColor(BRIGHT_YELLOW);
 	printf("\n找不到相关操作！请重新输入操作按键！\n");
 	
 	pause();
@@ -149,13 +149,13 @@ void about(void){
 }
 
 /*显示修改提示信息*/
-void cheatMsg(BOOL isSuccess,const char msg[]){
-	if(isSuccess){
-		setColor(10);
-		printf("\n修改【%s】成功！\n",msg);
+void cheatMsg(BOOL bIsSuccess,const char cMsg[]){
+	if(bIsSuccess){
+		setColor(BRIGHT_GREEN);
+		printf("\n修改【%s】成功！\n",cMsg);
 	}else{
-		setColor(12);
-		printf("\n修改【%s】失败！\n",msg);
+		setColor(BRIGHT_RED);
+		printf("\n修改【%s】失败！\n",cMsg);
 	}
 	
 	pause();
@@ -163,34 +163,33 @@ void cheatMsg(BOOL isSuccess,const char msg[]){
 
 /*显示启动的修改项目*/
 void showOpenCheat(void){
-	setColor(11);
+	setColor(BRIGHT_CYAN);
 	printf("\n当前开启的修改项目\n\n");
 	
-	setColor(13);
+	setColor(BRIGHT_MAGENTA);
 	
-	BOOL sign=FALSE;
-	if(backStageRun){
+	BOOL bSign=FALSE;
+	if(g_bIsBackStageRun){
 		printf("取消后台功能已启用\n");
-		sign=TRUE;
+		bSign=TRUE;
 	}
-	if(anyPosition){
+	if(g_bIsAnyPosition){
 		printf("重叠放置功能已启用\n");
-		sign=TRUE;
+		bSign=TRUE;
 	}
-	if(isLittle){
+	if(g_bIsLittleZombie){
 		printf("小僵尸特效已启用\n");
-		sign=TRUE;
+		bSign=TRUE;
 	}
 	
-	if(!sign)printf("目前没有修改项目正在启动\n");
+	if(!bSign)printf("目前没有修改项目正在启动\n");
 	
 	pause();
 }
 
 /*显示进程名称*/
-void showProcessName(const char msg1[],const char msg2[]){
-	printf("%s",msg1);
+void showProcessName(const char cMsgFirst[],const char cMsgLast[]){
+	printf("%s",cMsgFirst);
 	printf(PROCESS_NAME);
-	printf("%s",msg2);
+	printf("%s",cMsgLast);
 }
- 

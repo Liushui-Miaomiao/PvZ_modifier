@@ -1,13 +1,13 @@
 #include "headgr.h"
 
-DWORD Pid;
-HANDLE hProcess=0;
-int command;
+DWORD g_dwPid;
+HANDLE g_hProcess=0;
+int g_iCommand;
 
-BOOL isRun=FALSE;
-BOOL backStageRun=FALSE;
-BOOL anyPosition=FALSE;
-BOOL isLittle=FALSE; 
+BOOL g_bIsRun=FALSE;
+BOOL g_bIsBackStageRun=FALSE;
+BOOL g_bIsAnyPosition=FALSE;
+BOOL g_bIsLittleZombie=FALSE; 
 
 /*主函数*/
 int main(void){
@@ -15,12 +15,12 @@ int main(void){
 	
 	while(TRUE){
 		menu();
-		setColor(14);
+		setColor(BRIGHT_YELLOW);
 		
 		printf("\n请按下按键选择选项：");
-		command=getchar();
-		Choice();
+		g_iCommand=getchar();
+		choice();
 	}
 	
-	return 0;
+	return EXIT_FAILURE;
 }

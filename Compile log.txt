@@ -1,0 +1,39 @@
+重新生成整个项目...
+--------
+- 项目文件名: F:\PvZ_modifier\PvZ_modifier.dev
+- 编译器名: TDM-GCC 4.9.2 32-bit Release
+
+生成 makefile...
+--------
+- 文件名: F:\PvZ_modifier\Makefile.win
+- 资源文件: F:\PvZ_modifier\PvZ_modifier_private.res
+
+正在处理makefile...
+--------
+- makefile处理器: D:\Program Files (x86)\Dev-Cpp\MinGW64\bin\mingw32-make.exe
+- 命令: mingw32-make.exe -f "F:\PvZ_modifier\Makefile.win" clean all
+
+rm.exe -f PvZ_modifier.o pm_op.o p_op.o g_op.o g_msg.o PvZ_modifier_private.res PvZ_modifier.exe
+
+g++.exe -c PvZ_modifier.c -o PvZ_modifier.o -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -m32
+
+g++.exe -c pm_op.c -o pm_op.o -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -m32
+
+g++.exe -c p_op.c -o p_op.o -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -m32
+
+g++.exe -c g_op.c -o g_op.o -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -m32
+
+g++.exe -c g_msg.c -o g_msg.o -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -m32
+
+windres.exe -i PvZ_modifier_private.rc -F pe-i386 --input-format=rc -o PvZ_modifier_private.res -O coff 
+
+g++.exe PvZ_modifier.o pm_op.o p_op.o g_op.o g_msg.o PvZ_modifier_private.res -o PvZ_modifier.exe -L"D:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"D:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -m32
+
+
+编译结果...
+--------
+- 错误: 0
+- 警告: 0
+- 输出文件名: F:\PvZ_modifier\PvZ_modifier.exe
+- 输出大小: 133.4765625 KiB
+- 编译时间: 9.81s
