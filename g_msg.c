@@ -1,74 +1,69 @@
 /*Game Message*/
 
-#include "headgr.h"
-
-extern BOOL g_bIsRun;
-extern BOOL g_bIsBackStageRun;
-extern BOOL g_bIsAnyPosition;
-extern BOOL g_bIsLittleZombie; 
+#include "header\g_msg.h"
 
 /*主菜单*/
 void menu(void){
 	setColor(BRIGHT_WHITE);
-	printf("\n————————————————————\n");
-	printf("【植物大战僵尸】 C语言修改器\n\n");
-	printf("O：重新打开/搜索进程\n");
+	puts("\n————————————————————");
+	puts("【植物大战僵尸】 C语言修改器\n");
+	puts("O：重新打开/搜索进程\n");
 	if(g_bIsRun){
 		#if DEBUG
-			printf("T：测试代码（Debug）\n");
+			puts("T：测试代码（Debug）\n");
 		#endif
-		printf("\na：常规修改：\n");
-		printf("1：修改阳光\n");
-		printf("2：修改金钱\n");
-		printf("3：卡牌全部无冷却时间\n");
-		printf("4：允许后台运行（再开一次取消）\n");
-		printf("5：修改卡槽格数\n");
-		printf("6：自动收集资源\n");
+		puts("a：常规修改：");
+		puts("1：修改阳光");
+		puts("2：修改金钱");
+		puts("3：卡牌无冷却时间");
+		puts(g_bIsBackStageRun?"4：取消后台运行":"4：允许后台运行");
+		puts("5：修改卡槽格数");
+		puts("6：自动收集资源\n");
 
-		printf("\nb：关卡修改：\n");
-		printf("1：冒险模式跳关\n");
-		printf("2：小游戏跳关（混乱关卡）\n");
+		puts("b：关卡修改：");
+		puts("1：冒险模式跳关");
+		puts("2：小游戏跳关（混乱关卡）\n");
 
-		printf("\nc：植物修改：\n");
-		printf("1：激活重叠放置（再开一次取消）\n");
-		printf("2：紫卡种植无限制\n");
+		puts("c：植物修改：");
+		puts(g_bIsAnyPosition?"1：取消重叠放置":"1：激活重叠放置");
+		puts("2：紫卡种植无限制\n");
 
-		printf("\nd：僵尸修改：\n");
-		printf("1：秒杀场上所有僵尸\n");
-		printf("2：小僵尸特效（再开一次恢复正常大小）\n");
+		puts("d：僵尸修改：");
+		puts("1：秒杀场上所有僵尸");
+		puts(g_bIsLittleZombie?"2：关闭小僵尸特效\n":"2：开启小僵尸特效\n");
 
-		printf("\ne：花园修改：\n");
-		printf("1：修改智慧树高度\n");
-		printf("2：巧克力数量修改\n");
+		puts("e：花园修改：");
+		puts("1：修改智慧树高度");
+		puts("2：巧克力数量修改\n");
 
-		printf("\nf：其他修改：\n");
-		printf("1：花瓶透视\n");
-		printf("2：显示隐藏小游戏\n");
+		puts("f：其他修改：");
+		puts("1：花瓶透视");
+		puts("2：显示隐藏小游戏\n");
 	}
-	printf("\n特殊功能：\n");
-	printf("~：查看修改器更新公告\n");
-	printf("!：查看迷你小游戏、解密模式、生存模式关卡代码\n");
-	printf("@：查看PVZ小代码（彩蛋）大全\n");
-	printf("#：查看目前已经开启的效果\n");
-	printf("A：关于本修改器信息\n");
-	printf("\nE：退出修改器");
-	printf("\n————————————————————\n");
+	puts("特殊功能：");
+	puts("~：查看修改器更新公告");
+	puts("!：查看迷你小游戏、解密模式、生存模式关卡代码");
+	puts("@：查看PVZ小代码（彩蛋）大全");
+	puts("#：查看目前已经开启的效果");
+	puts("A：关于本修改器信息\n");
+	puts("E：退出修改器\n");
+	puts("————————————————————");
 }
 
 /*更新信息*/
 void upDate(void){
 	setColor(BRIGHT_BLUE);
-	printf("\n更新公告\n\n");
-	printf("v0.1 [2019.03.04] 增加了最初的十个功能（1~0）\n");
+	puts("\n更新公告\n");
+	puts("v0.1 [2019.03.04] 增加了最初的十个功能（1~0）");
 	
-	printf("v0.2 [2019.03.13] 新增以下功能：\n");
-	printf("\t(1)自动收集资源\n\t(2)显示隐藏小游戏\n\t(3)重叠放置\n\t(4)巧克力修改\n\t(5)小僵尸特效\n\t(6)紫卡种植无限制\n");
-	printf("修复/增强了以下功能：\n");
-	printf("\t(1)花瓶透视不稳定性修复\n\t(2)秒杀僵尸不稳定性修复\n");
+	puts("v0.2 [2019.03.13] 新增以下功能：");
+	puts("\t(1)自动收集资源\n\t(2)显示隐藏小游戏\n\t(3)重叠放置\n\t(4)巧克力修改\n\t(5)小僵尸特效\n\t(6)紫卡种植无限制");
+	puts("修复/增强了以下功能：");
+	puts("\t(1)花瓶透视不稳定性修复\n\t(2)秒杀僵尸不稳定性修复");
 	
-	printf("v0.21 [2019.07.28] 优化内存读写操作\n");
+	puts("v0.21 [2019.07.28] 优化内存读写操作");
 	
-	printf("v0.22 [2019.09.16] 优化文件结构\n");
+	puts("v0.22 [2019.09.16] 优化文件结构");
 	
 	pause();
 }
@@ -76,14 +71,14 @@ void upDate(void){
 /*小代码*/
 void cheatCode(void){
 	setColor(MAGENTA);
-	printf("\nPVZ小代码大全（培养智慧树到一定高度智慧树会告诉你的）\n\n");
-	printf("future ------ 僵尸戴上时尚太阳眼镜\n");
-	printf("mustache ---- 僵尸戴上两撇胡子\n");
-	printf("trickedout -- 剪草机统一变成机车剪草机\n");
-	printf("daisies ----- 当僵尸被杀后掉下一些雏菊（需要智慧树达到100米）\n");
-	printf("dance ------- 让僵尸摆动身体跳舞（动次打次 动次打次）（需要智慧树达到500米）\n");
-	printf("sukhbir ----- 切换僵尸呼唤大脑时的叫声φ(>ω<*) \n");
-	printf("pinata ------ 僵尸死后散落一地的糖果（需要智慧树达到1000米）\n");
+	puts("\nPVZ小代码大全（培养智慧树到一定高度智慧树会告诉你的）\n");
+	puts("future ------ 僵尸戴上时尚太阳眼镜");
+	puts("mustache ---- 僵尸戴上两撇胡子");
+	puts("trickedout -- 剪草机统一变成机车剪草机");
+	puts("daisies ----- 当僵尸被杀后掉下一些雏菊（需要智慧树达到100米）");
+	puts("dance ------- 让僵尸摆动身体跳舞（动次打次 动次打次）（需要智慧树达到500米）");
+	puts("sukhbir ----- 切换僵尸呼唤大脑时的叫声φ(>ω<*)");
+	puts("pinata ------ 僵尸死后散落一地的糖果（需要智慧树达到1000米）");
 	
 	pause();
 }
@@ -92,7 +87,7 @@ void cheatCode(void){
 void showMiniGameList(void){
 	setColor(BRIGHT_CYAN);
 	
-	printf("\n小游戏代码（红色加“*”标志的关卡不能跳关/混乱，会造成崩溃退出）\n\n");
+	puts("\n小游戏代码（红色加“*”标志的关卡不能跳关/混乱，会造成崩溃退出）\n");
 	const char *miniGameList[]={"生存模式：白天","生存模式：黑夜","生存模式：泳池","生存模式：浓雾","生存模式：屋顶",
 							"生存模式：白天（困难）","生存模式：黑夜（困难）","生存模式：泳池（困难）","生存模式：浓雾（困难）","生存模式：屋顶（困难）",
 							"生存模式：白天（无尽）","生存模式：黑夜（无尽）","生存模式：泳池（无尽）","生存模式：浓雾（无尽）","生存模式：屋顶（无尽）",
@@ -114,7 +109,7 @@ void showMiniGameList(void){
 	for(i=0;i<iGameListLength;i++){
 		if(i==37||i==42||i==49){
 			setColor(BRIGHT_RED);
-			printf("*");
+			putchar('*');
 		}else{
 			setColor(BRIGHT_CYAN);
 		}
@@ -124,26 +119,18 @@ void showMiniGameList(void){
 	pause();
 }
 
-/*暂停*/
-void pause(void){
-	setColor(BRIGHT_YELLOW);
-	printf("\n按任意键继续……\n");
-	
-	getch();
-}
-
 /*找不到操作*/
 void noOperation(void){
 	setColor(BRIGHT_YELLOW);
-	printf("\n找不到相关操作！请重新输入操作按键！\n");
+	puts("\n找不到相关操作！请重新输入操作按键！");
 	
 	pause();
 }
 
 /*关于信息*/
 void about(void){
-	printf("\n关于：本程序是植物大战僵尸（Plants vs. Zombies）的修改器，使用【Dev-C++】开发编译");
-	printf("\n修改器作者：流水“渺渺\n感谢大家的使用，有任何疑问和bug可以反馈给我\n\n");
+	puts("\n关于：本程序是植物大战僵尸（Plants vs. Zombies）的修改器，使用【Dev-C++】开发编译");
+	puts("修改器作者：流水“渺渺\n感谢大家的使用，有任何疑问和bug可以反馈给我");
 	
 	pause();
 }
@@ -164,32 +151,32 @@ void cheatMsg(BOOL bIsSuccess,const char cMsg[]){
 /*显示启动的修改项目*/
 void showOpenCheat(void){
 	setColor(BRIGHT_CYAN);
-	printf("\n当前开启的修改项目\n\n");
+	puts("\n当前开启的修改项目\n");
 	
 	setColor(BRIGHT_MAGENTA);
 	
 	BOOL bSign=FALSE;
 	if(g_bIsBackStageRun){
-		printf("取消后台功能已启用\n");
+		puts("取消后台功能已启用");
 		bSign=TRUE;
 	}
 	if(g_bIsAnyPosition){
-		printf("重叠放置功能已启用\n");
+		puts("重叠放置功能已启用");
 		bSign=TRUE;
 	}
 	if(g_bIsLittleZombie){
-		printf("小僵尸特效已启用\n");
+		puts("小僵尸特效已启用");
 		bSign=TRUE;
 	}
 	
-	if(!bSign)printf("目前没有修改项目正在启动\n");
+	if(!bSign){
+		puts("目前没有修改项目正在启动");
+	}
 	
 	pause();
 }
 
 /*显示进程名称*/
 void showProcessName(const char cMsgFirst[],const char cMsgLast[]){
-	printf("%s",cMsgFirst);
-	printf(PROCESS_NAME);
-	printf("%s",cMsgLast);
+	printf("%s%s%s",cMsgFirst,PROCESS_NAME,cMsgLast);
 }

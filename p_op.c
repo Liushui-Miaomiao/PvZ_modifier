@@ -1,36 +1,36 @@
 /*Process Operation*/
 
-#include "headgr.h"
+#include "header\p_op.h"
 
 /*通过进程名返回pid*/
-BOOL findProcessPidByName(const char cProcessName[],DWORD &dwPid){
+BOOL getProcessPidByName(const char cProcessName[],DWORD &dwPid){
 	HANDLE hProcessSnap;
-	PROCESSENTRY32 pe32;
 	
 	hProcessSnap=CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
 	if(hProcessSnap==INVALID_HANDLE_VALUE){
 		return FALSE;
 	}
 	
+	PROCESSENTRY32 pe32;
 	pe32.dwSize=sizeof(PROCESSENTRY32);
 	
-	if(Process32First(hProcessSnap,&pe32)==0){
+	if(!Process32First(hProcessSnap,&pe32)){
 		CloseHandle(hProcessSnap);
 		return FALSE;
 	}
 	
-	BOOL bRet=FALSE;
+	BOOL bIsOK=FALSE;
 	do{
-		if(strcmp(cProcessName,pe32.szExeFile)==0){
+		if(!strcmp(cProcessName,pe32.szExeFile)){
 			dwPid=pe32.th32ProcessID;
-			bRet=TRUE;
+			bIsOK=TRUE;
 			break;
 		}
 	}while(Process32Next(hProcessSnap,&pe32));
 	
 	CloseHandle(hProcessSnap);
 	
-	return bRet;
+	return bIsOK;
 }
 
 /*置控制台颜色*/
