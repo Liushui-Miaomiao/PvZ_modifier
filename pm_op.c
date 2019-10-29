@@ -10,7 +10,7 @@ static DWORD getMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwSize,
 	int i;
 	if(iLevel!=0){
 		for(i=0;i<iLevel;i++){
-			ReadProcessMemory(hProcess,(LPVOID)dwTempAddr,&dwTempAddr,dwSize,NULL);
+			ReadProcessMemory(hProcess,(LPCVOID)dwTempAddr,&dwTempAddr,dwSize,NULL);
 			dwTempAddr+=va_arg(argptr,DWORD);
 		}
 	}
@@ -19,7 +19,7 @@ static DWORD getMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwSize,
 	
 	#if DEBUG
 		int iValue;
-		ReadProcessMemory(hProcess,(LPVOID)dwTempAddr,&iValue,dwSize,NULL);
+		ReadProcessMemory(hProcess,(LPCVOID)dwTempAddr,&iValue,dwSize,NULL);
 		printf("偏移地址为：%x，读取的值为：%d\n",dwTempAddr,iValue);
 	#endif
 	
@@ -31,13 +31,17 @@ DWORD readMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwSize,...){
 	va_list argptr;
 	va_start(argptr,dwSize);
 	
-	DWORD finalAddr;
-	finalAddr=getMemory(hProcess,dwBaseAddr,iLevel,dwSize,argptr);
+	if(dwSize>4){
+		dwSize=4;
+	}
+	
+	DWORD dwFinalAddr;
+	dwFinalAddr=getMemory(hProcess,dwBaseAddr,iLevel,dwSize,argptr);
 	
 	va_end(argptr);
 	
 	DWORD dwValue;
-	ReadProcessMemory(hProcess,(LPVOID)finalAddr,&dwValue,dwSize,NULL);
+	ReadProcessMemory(hProcess,(LPCVOID)dwFinalAddr,&dwValue,dwSize,NULL);
 	
 	return dwValue;
 }
@@ -47,10 +51,14 @@ BOOL writeMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwValue,DWORD
 	va_list argptr;
 	va_start(argptr,dwSize);
 	
-	DWORD finalAddr;
-	finalAddr=getMemory(hProcess,dwBaseAddr,iLevel,dwSize,argptr);
+	if(dwSize>4){
+		dwSize=4;
+	}
+	
+	DWORD dwFinalAddr;
+	dwFinalAddr=getMemory(hProcess,dwBaseAddr,iLevel,dwSize,argptr);
 	
 	va_end(argptr);
 	
-	return WriteProcessMemory(hProcess,(LPVOID)finalAddr,&dwValue,dwSize,NULL);
+	return WriteProcessMemory(hProcess,(LPVOID)dwFinalAddr,&dwValue,dwSize,NULL);
 }

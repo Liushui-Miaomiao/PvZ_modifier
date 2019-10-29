@@ -75,13 +75,12 @@ BOOL openGameProcess(void){
 
 /*是否已经读取游戏进程*/
 BOOL openModifier(void){
-	if(g_hProcess==0){
+	if(!g_bIsRun){
 		setColor(BRIGHT_YELLOW);
 		printf("\n请先打开修改器搜索游戏句柄！\n");
-		return FALSE;
 	}
 	
-	return TRUE;
+	return g_bIsRun;
 }
 
 /*选择流程*/
@@ -104,55 +103,31 @@ void choice(void){
 		
 		/*常规修改*/
 		case 'a':
-			if(!openModifier()){
-				pause();
-				break;
-			}
 			choiceBranch("常规修改");
 			break;
 		
 		/*关卡修改*/
 		case 'b':
-			if(!openModifier()){
-				pause();
-				break;
-			}
 			choiceBranch("关卡修改");
 			break;
 		
 		/*植物修改*/
 		case 'c':
-			if(!openModifier()){
-				pause();
-				break;
-			}
 			choiceBranch("植物修改");
 			break;
 		
 		/*僵尸修改*/
 		case 'd':
-			if(!openModifier()){
-				pause();
-				break;
-			}
 			choiceBranch("僵尸修改");
 			break;
 		
 		/*花园修改*/
 		case 'e':
-			if(!openModifier()){
-				pause();
-				break;
-			}
 			choiceBranch("花园修改");
 			break;
 		
 		/*其他修改*/
 		case 'f':
-			if(!openModifier()){
-				pause();
-				break;
-			}
 			choiceBranch("其他修改");
 			break;
 		case '~':
@@ -183,6 +158,11 @@ void choice(void){
 
 /*选择分支*/
 void choiceBranch(const char branceName[]){
+	if(!openModifier()){
+		pause();
+		return;
+	}
+	
 	getchar();
 	setColor(BRIGHT_YELLOW);
 	printf("\n已进入【%s】菜单，请选择子选项：",branceName);

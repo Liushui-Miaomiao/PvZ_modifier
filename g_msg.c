@@ -5,49 +5,42 @@
 /*主菜单*/
 void menu(void){
 	setColor(BRIGHT_WHITE);
-	puts("\n————————————————————");
+	puts("\n——————————————————————————");
 	puts("【植物大战僵尸】 C语言修改器\n");
 	puts("O：重新打开/搜索进程\n");
 	if(g_bIsRun){
 		#if DEBUG
 			puts("T：测试代码（Debug）\n");
 		#endif
-		puts("a：常规修改：");
-		puts("1：修改阳光");
-		puts("2：修改金钱");
+		setColor(BRIGHT_CYAN);
+		puts("a：常规修改：\t\t  b：关卡修改：");
+		setColor(BRIGHT_WHITE);
+		puts("1：修改阳光\t\t  1：冒险模式跳关");
+		puts("2：修改金钱\t\t  2：小游戏跳关（混乱关卡）");
 		puts("3：卡牌无冷却时间");
 		puts(g_bIsBackStageRun?"4：取消后台运行":"4：允许后台运行");
 		puts("5：修改卡槽格数");
 		puts("6：自动收集资源\n");
-
-		puts("b：关卡修改：");
-		puts("1：冒险模式跳关");
-		puts("2：小游戏跳关（混乱关卡）\n");
-
-		puts("c：植物修改：");
-		puts(g_bIsAnyPosition?"1：取消重叠放置":"1：激活重叠放置");
-		puts("2：紫卡种植无限制\n");
-
-		puts("d：僵尸修改：");
-		puts("1：秒杀场上所有僵尸");
-		puts(g_bIsLittleZombie?"2：关闭小僵尸特效\n":"2：开启小僵尸特效\n");
-
-		puts("e：花园修改：");
-		puts("1：修改智慧树高度");
-		puts("2：巧克力数量修改\n");
-
-		puts("f：其他修改：");
-		puts("1：花瓶透视");
-		puts("2：显示隐藏小游戏\n");
+		
+		setColor(BRIGHT_CYAN);
+		puts("c：植物修改：\t\t  d：僵尸修改：");
+		setColor(BRIGHT_WHITE);
+		printf("%s\t\t  1：秒杀场上所有僵尸\n",g_bIsAnyPosition?"1：取消重叠放置":"1：激活重叠放置");
+		printf("2：紫卡种植无限制\t  %s\n",g_bIsLittleZombie?"2：关闭小僵尸特效\n":"2：开启小僵尸特效\n");
+		
+		setColor(BRIGHT_CYAN);
+		puts("e：花园修改：\t\t  f：其他修改：");
+		setColor(BRIGHT_WHITE);
+		puts("1：修改智慧树高度\t  1：花瓶透视");
+		puts("2：巧克力数量修改\t  2：显示隐藏小游戏\n");
 	}
+	setColor(BRIGHT_CYAN);
 	puts("特殊功能：");
-	puts("~：查看修改器更新公告");
-	puts("!：查看迷你小游戏、解密模式、生存模式关卡代码");
-	puts("@：查看PVZ小代码（彩蛋）大全");
-	puts("#：查看目前已经开启的效果");
-	puts("A：关于本修改器信息\n");
-	puts("E：退出修改器\n");
-	puts("————————————————————");
+	setColor(BRIGHT_WHITE);
+	puts("~：查看修改器更新公告\t  !：查看关卡代码");
+	puts("@：查看PVZ小代码大全\t  #：查看已经开启的效果");
+	puts("A：关于本修改器信息\t  E：退出修改器\n");
+	puts("——————————————————————————");
 }
 
 /*更新信息*/
@@ -60,9 +53,7 @@ void upDate(void){
 	puts("\t(1)自动收集资源\n\t(2)显示隐藏小游戏\n\t(3)重叠放置\n\t(4)巧克力修改\n\t(5)小僵尸特效\n\t(6)紫卡种植无限制");
 	puts("修复/增强了以下功能：");
 	puts("\t(1)花瓶透视不稳定性修复\n\t(2)秒杀僵尸不稳定性修复");
-	
 	puts("v0.21 [2019.07.28] 优化内存读写操作");
-	
 	puts("v0.22 [2019.09.16] 优化文件结构");
 	
 	pause();
