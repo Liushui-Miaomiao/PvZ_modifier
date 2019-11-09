@@ -35,5 +35,5 @@ g++.exe PvZ_modifier.o pm_op.o p_op.o g_op.o g_msg.o PvZ_modifier_private.res -o
 - 错误: 0
 - 警告: 0
 - 输出文件名: F:\PvZ_modifier\PvZ_modifier.exe
-- 输出大小: 133.896484375 KiB
-- 编译时间: 11.08s
+- 输出大小: 133.9169921875 KiB
+- 编译时间: 7.70s

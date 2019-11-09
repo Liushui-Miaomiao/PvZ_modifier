@@ -2,6 +2,9 @@
 
 #include "header\p_op.h"
 
+#include <tlhelp32.h>
+#include <stdlib.h>
+
 /*通过进程名返回pid*/
 BOOL getProcessPidByName(const char cProcessName[],DWORD &dwPid){
 	HANDLE hProcessSnap;

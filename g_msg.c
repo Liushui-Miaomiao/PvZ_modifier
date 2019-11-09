@@ -1,6 +1,15 @@
 /*Game Message*/
 
 #include "header\g_msg.h"
+#include "header\public\color.h"
+
+extern BOOL g_bIsRun;
+extern BOOL g_bIsBackStageRun;
+extern BOOL g_bIsAnyPosition;
+extern BOOL g_bIsLittleZombie;
+
+/*g_op - Game Operation*/
+void pause(void);
 
 /*Ö÷²Ëµ¥*/
 void menu(void){

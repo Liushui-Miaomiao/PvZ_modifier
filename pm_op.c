@@ -2,8 +2,12 @@
 
 #include "header\pm_op.h"
 
+#include <stdarg.h>
+
+static DWORD getMemory(HANDLE hProcess,DWORD dwBaseAddr,DWORD dwSize,int iLevel,va_list argptr);
+
 /*得到最终内存地址*/
-static DWORD getMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwSize,va_list argptr){
+static DWORD getMemory(HANDLE hProcess,DWORD dwBaseAddr,DWORD dwSize,int iLevel,va_list argptr){
 	DWORD dwTempAddr;
 	dwTempAddr=dwBaseAddr;
 	
@@ -27,16 +31,16 @@ static DWORD getMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwSize,
 }
 
 /*读取并返回指定内存数据*/
-DWORD readMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwSize,...){
+DWORD readMemory(HANDLE hProcess,DWORD dwBaseAddr,DWORD dwSize,int iLevel,...){
 	va_list argptr;
-	va_start(argptr,dwSize);
+	va_start(argptr,iLevel);
 	
 	if(dwSize>4){
 		dwSize=4;
 	}
 	
 	DWORD dwFinalAddr;
-	dwFinalAddr=getMemory(hProcess,dwBaseAddr,iLevel,dwSize,argptr);
+	dwFinalAddr=getMemory(hProcess,dwBaseAddr,dwSize,iLevel,argptr);
 	
 	va_end(argptr);
 	
@@ -47,16 +51,16 @@ DWORD readMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwSize,...){
 }
 
 /*将数据写入指定内存*/
-BOOL writeMemory(HANDLE hProcess,DWORD dwBaseAddr,int iLevel,DWORD dwValue,DWORD dwSize,...){
+BOOL writeMemory(HANDLE hProcess,DWORD dwBaseAddr,DWORD dwValue,DWORD dwSize,int iLevel,...){
 	va_list argptr;
-	va_start(argptr,dwSize);
+	va_start(argptr,iLevel);
 	
 	if(dwSize>4){
 		dwSize=4;
 	}
 	
 	DWORD dwFinalAddr;
-	dwFinalAddr=getMemory(hProcess,dwBaseAddr,iLevel,dwSize,argptr);
+	dwFinalAddr=getMemory(hProcess,dwBaseAddr,dwSize,iLevel,argptr);
 	
 	va_end(argptr);
 	

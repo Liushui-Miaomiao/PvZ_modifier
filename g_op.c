@@ -1,6 +1,18 @@
 /*Game Operation*/
 
 #include "header\g_op.h"
+#include "header\g_msg.h"
+#include "header\pm_op.h"
+#include "header\p_op.h"
+#include "header\public\color.h"
+
+#include <conio.h>
+
+static DWORD g_dwPid;
+static HANDLE g_hProcess;
+static int g_iCommand;
+
+static DWORD *p_g_dwBuffer;
 
 /*初始化修改器*/
 void initModifier(void){
@@ -41,17 +53,17 @@ BOOL openGameProcess(void){
 			showProcessName("\n成功打开游戏进程[","]！");
 			printf("进程句柄：%d\n",g_hProcess);
 			
-			if(readMemory(g_hProcess,0x42748E,0,4)==0xFF563DE8){
-				if(readMemory(g_hProcess,0x0054EBEF,0,1)==0xFF563DC3){
+			if(readMemory(g_hProcess,0x42748E,4,0)==0xFF563DE8){
+				if(readMemory(g_hProcess,0x0054EBEF,1,0)==0xFF563DC3){
 					g_bIsBackStageRun=TRUE;
 				}
-				if(readMemory(g_hProcess,0x0040FE30,0,1)==0xFF563D81
-				&&readMemory(g_hProcess,0x00438E40,0,1)==0xFF563DEB
-				&&readMemory(g_hProcess,0x0042A2D9,0,1)==0xFF563D8D){
+				if(readMemory(g_hProcess,0x0040FE30,1,0)==0xFF563D81&&
+				readMemory(g_hProcess,0x00438E40,1,0)==0xFF563DEB&&
+				readMemory(g_hProcess,0x0042A2D9,1,0)==0xFF563D8D){
 					
 					g_bIsAnyPosition=TRUE;
 				}
-				if(readMemory(g_hProcess,0x00523ED5,0,1)==0xFF563DEB){
+				if(readMemory(g_hProcess,0x00523ED5,1,0)==0xFF563DEB){
 					g_bIsLittleZombie=TRUE;
 				}
 				
@@ -191,14 +203,14 @@ void choiceBranchNormal(void){
 			if(openModifier()){
 				printf("\n请输入要修改的阳光数量：");
 				scanf("%d",p_g_dwBuffer);
-				cheatMsg(changeSunlight(p_g_dwBuffer),"阳光");
+				cheatMsg(changeSunlight(),"阳光");
 			}
 			break;
 		case '2':
 			if(openModifier()){
 				printf("\n请输入要修改的金钱数量：");
 				scanf("%d",p_g_dwBuffer);
-				cheatMsg(changeMoney(p_g_dwBuffer),"金钱");
+				cheatMsg(changeMoney(),"金钱");
 			}
 			break;
 		case '3':
@@ -216,7 +228,7 @@ void choiceBranchNormal(void){
 			if(openModifier()){
 				printf("\n请输入要修改的卡槽格数（1~10）：");
 				scanf("%d",p_g_dwBuffer);
-				cheatMsg(changeCardsNum(p_g_dwBuffer),"卡槽格数");
+				cheatMsg(changeCardsNum(),"卡槽格数");
 			}
 			break;
 		case '6':
@@ -236,7 +248,7 @@ void choiceBranchLevel(void){
 			if(openModifier()){
 				printf("\n请输入要修改的冒险关卡（例如我要去4-3关卡，那么应该输入43）：");
 				scanf("%d",p_g_dwBuffer);
-				cheatMsg(adventureJumpLevel(p_g_dwBuffer),"冒险模式关卡");
+				cheatMsg(adventureJumpLevel(),"冒险模式关卡");
 			}
 			break;
 		case '2':
@@ -246,7 +258,7 @@ void choiceBranchLevel(void){
 				puts("修改关卡代码然后点击重新开始，如果不重新开始的话将会产生混乱关卡的效果");
 				printf("请输入要进入的迷你游戏ID（ID可通过查询【!】菜单的关卡代码（1~70））：");
 				scanf("%d",p_g_dwBuffer);
-				cheatMsg(miniGameJumpLevel(p_g_dwBuffer),"小游戏跳关");
+				cheatMsg(miniGameJumpLevel(),"小游戏跳关");
 			}
 			break;
 		default :
@@ -261,8 +273,8 @@ void choiceBranchPlant(void){
 			if(openModifier()){
 				cheatMsg(anyPosition(g_bIsAnyPosition?0x84:0x81,
 				g_bIsAnyPosition?0x74:0xEB,
-				g_bIsAnyPosition?0x84:0x8D)
-				,g_bIsAnyPosition?"取消重叠放置":"开启重叠放置");
+				g_bIsAnyPosition?0x84:0x8D),
+				g_bIsAnyPosition?"取消重叠放置":"开启重叠放置");
 				
 				g_bIsAnyPosition=!g_bIsAnyPosition;
 			}
@@ -287,8 +299,8 @@ void choiceBranchZombie(void){
 			break;
 		case '2':
 			if(openModifier()){
-				cheatMsg(littleZombie(g_bIsLittleZombie?0x74:0xEB)
-				,g_bIsLittleZombie?"关闭小僵尸特效":"开启小僵尸特效");
+				cheatMsg(littleZombie(g_bIsLittleZombie?0x74:0xEB),
+				g_bIsLittleZombie?"关闭小僵尸特效":"开启小僵尸特效");
 				
 				g_bIsLittleZombie=!g_bIsLittleZombie;
 			}
@@ -305,14 +317,14 @@ void choiceBranchGarden(void){
 			if(openModifier()){
 				printf("\n请输入要修改的智慧树高度：");
 				scanf("%d",p_g_dwBuffer);
-				cheatMsg(changeWisdomTree(p_g_dwBuffer),"智慧树高度");
+				cheatMsg(changeWisdomTree(),"智慧树高度");
 			}
 			break;
 		case '2':
 			if(openModifier()){
 				printf("\n请输入要修改的巧克力数量：");
 				scanf("%d",p_g_dwBuffer);
-				cheatMsg(changeChocolate(p_g_dwBuffer),"巧克力数量");
+				cheatMsg(changeChocolate(),"巧克力数量");
 			}
 			break;
 		default :
@@ -340,8 +352,12 @@ void choiceBranchOther(void){
 
 /*规范数据范围*/
 int limit(int iValue,int iMin,int iMax){
-	if(iValue<iMin)return iMin;
-	if(iValue>iMax)return iMax;
+	if(iValue<iMin){
+		return iMin;
+	}
+	if(iValue>iMax){
+		return iMax;
+	}
 	
 	return iValue;
 }
@@ -355,81 +371,81 @@ void pause(void){
 }
 
 /*阳光*/
-BOOL changeSunlight(DWORD *p_dwSunlight){
+BOOL changeSunlight(void){
 	DWORD dwSunlight;
-	dwSunlight=limit(*p_dwSunlight,0,9990);
+	dwSunlight=limit(*p_g_dwBuffer,0,9990);
 	
-	return writeMemory(g_hProcess,0x006A9EC0,2,dwSunlight,4,0x768,0x5560);
+	return writeMemory(g_hProcess,0x006A9EC0,dwSunlight,4,2,0x768,0x5560);
 }
 
 /*金钱*/
-BOOL changeMoney(DWORD *p_dwMoney){
+BOOL changeMoney(void){
 	DWORD dwMoney;
-	dwMoney=limit(*p_dwMoney,0,99999);
+	dwMoney=limit(*p_g_dwBuffer,0,99999);
 	
-	return writeMemory(g_hProcess,0x006A9EC0,2,dwMoney,4,0x82C,0x28);
+	return writeMemory(g_hProcess,0x006A9EC0,dwMoney,4,2,0x82C,0x28);
 }
 
 /*卡牌无冷却*/
 BOOL cardNoCD(void){
-	return writeMemory(g_hProcess,0x00487296,0,0x1477,2);
+	return writeMemory(g_hProcess,0x00487296,0x1477,2,0);
 }
 
 /*后台运行*/
 BOOL backStageRun(DWORD dwValue){
-	return writeMemory(g_hProcess,0x0054EBEF,0,dwValue,1);
+	return writeMemory(g_hProcess,0x0054EBEF,dwValue,1,0);
 }
 
 /*卡槽格数*/
-BOOL changeCardsNum(DWORD *p_dwCardNum){
+BOOL changeCardsNum(void){
 	DWORD dwCardNum;
-	dwCardNum=limit(*p_dwCardNum,1,10);
+	dwCardNum=limit(*p_g_dwBuffer,1,10);
 	
-	return writeMemory(g_hProcess,0x006A9EC0,3,dwCardNum,4,0x768,0x144,0x24);
+	return writeMemory(g_hProcess,0x006A9EC0,dwCardNum,4,3,0x768,0x144,0x24);
 }
 
 /*自动收集*/
 BOOL autoCollect(void){
-	return writeMemory(g_hProcess,0x0043158F,0,0xEB,1);
+	return writeMemory(g_hProcess,0x0043158F,0xEB,1,0);
 }
 
 /*冒险跳关*/
-BOOL adventureJumpLevel(DWORD *p_dwLevel){
+BOOL adventureJumpLevel(void){
 	DWORD dwLevel;
-	dwLevel=limit(*p_dwLevel,11,99)-10;
+	dwLevel=limit(*p_g_dwBuffer,11,99)-10;
 	
-	return writeMemory(g_hProcess,0x006A9EC0,2,dwLevel,4,0x82C,0x24);
+	return writeMemory(g_hProcess,0x006A9EC0,dwLevel,4,2,0x82C,0x24);
 }
 
 /*小游戏跳关*/
-BOOL miniGameJumpLevel(DWORD *p_dwLevel){
+BOOL miniGameJumpLevel(void){
 	DWORD dwLevel;
-	dwLevel=limit(*p_dwLevel,1,70);
+	dwLevel=limit(*p_g_dwBuffer,1,70);
 	
-	return writeMemory(g_hProcess,0x006A9EC0,1,dwLevel,4,0x7F8);
+	return writeMemory(g_hProcess,0x006A9EC0,dwLevel,4,1,0x7F8);
 }
 
 /*重叠放置*/
 BOOL anyPosition(DWORD dwValue_1,DWORD dwValue_2,DWORD dwValue_3){
-	return writeMemory(g_hProcess,0x0040FE30,0,dwValue_1,1)
-		&&writeMemory(g_hProcess,0x00438E40,0,dwValue_2,1)
-		&&writeMemory(g_hProcess,0x0042A2D9,0,dwValue_3,1);
+	return writeMemory(g_hProcess,0x0040FE30,dwValue_1,1,0)&&
+		writeMemory(g_hProcess,0x00438E40,dwValue_2,1,0)&&
+		writeMemory(g_hProcess,0x0042A2D9,dwValue_3,1,0);
 }
 
 /*紫卡无限制*/
 BOOL purpleUnlimit(void){
-	return writeMemory(g_hProcess,0x0041D7D0,0,0xC301B0,3)
-		&&writeMemory(g_hProcess,0x0040E477,0,0xEB,1);
+	return writeMemory(g_hProcess,0x0041D7D0,0xC301B0,3,0)&&
+		writeMemory(g_hProcess,0x0040E477,0xEB,1,0);
 }
 
 /*秒杀全部僵尸*/
 BOOL killAllZombies(void){
 	int i;
 	BOOL bKill=FALSE;
-	printf("僵尸数量：%d\n",readMemory(g_hProcess,0x006A9EC0,2,4,0x768,0xA0));
+	printf("僵尸数量：%d\n",readMemory(g_hProcess,0x006A9EC0,4,2,0x768,0xA0));
 	for(i=0;i<ZOMBIES_MAX_NUM;i++){
-		if(readMemory(g_hProcess,0x006A9EC0,3,4,0x768,0x90,i*0x15C+0xEC)==ZOMBIES_NORMAL_STATUS){
-			bKill=writeMemory(g_hProcess,0x006A9EC0,3,ZOMBIES_DIE_STATUS,4,0x768,0x90,i*0x15C+0x28);
+		if(readMemory(g_hProcess,0x006A9EC0,4,3,0x768,0x90,i*0x15C+0xEC)==ZOMBIES_NORMAL_STATUS){
+			bKill=writeMemory(g_hProcess,0x006A9EC0,ZOMBIES_DIE_STATUS,4,3,0x768,0x90,i*0x15C+0x28);
 		}
 	}
 	
@@ -438,31 +454,31 @@ BOOL killAllZombies(void){
 
 /*小僵尸特效*/
 BOOL littleZombie(DWORD dwValue){
-	return writeMemory(g_hProcess,0x00523ED5,0,dwValue,1);
+	return writeMemory(g_hProcess,0x00523ED5,dwValue,1,0);
 }
 
 /*智慧树*/
-BOOL changeWisdomTree(DWORD *p_dwTreeHigh){
+BOOL changeWisdomTree(void){
 	DWORD dwTreeHigh;
-	dwTreeHigh=limit(*p_dwTreeHigh,0,2147483647);
+	dwTreeHigh=limit(*p_g_dwBuffer,0,2147483647);
 	
-	return writeMemory(g_hProcess,0x006A9EC0,2,dwTreeHigh,4,0x82C,0xF4);
+	return writeMemory(g_hProcess,0x006A9EC0,dwTreeHigh,4,2,0x82C,0xF4);
 }
 
 /*巧克力*/
-BOOL changeChocolate(DWORD *p_dwChocolate){
+BOOL changeChocolate(void){
 	DWORD dwChocolate;
-	dwChocolate=limit(*p_dwChocolate,0,999)+1000;
+	dwChocolate=limit(*p_g_dwBuffer,0,999)+1000;
 	
-	return writeMemory(g_hProcess,0x006A9EC0,2,dwChocolate,4,0x82C,0x228);
+	return writeMemory(g_hProcess,0x006A9EC0,dwChocolate,4,2,0x82C,0x228);
 }
 
 /*花瓶透视*/
 BOOL vaseFluoro(void){
-	return writeMemory(g_hProcess,0x0044E5CC,0,0x0033B866,4);
+	return writeMemory(g_hProcess,0x0044E5CC,0x0033B866,4,0);
 }
 
 /*显示隐藏小游戏*/
 BOOL showHideMiniGame(void){
-	return writeMemory(g_hProcess,0x0042DF5D,0,0x38,1);
+	return writeMemory(g_hProcess,0x0042DF5D,0x38,1,0);
 }
