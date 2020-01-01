@@ -5,6 +5,8 @@
 #include <tlhelp32.h>
 #include <stdlib.h>
 
+extern DWORD *p_g_dwBuffer;
+
 /*通过进程名返回pid*/
 BOOL getProcessPidByName(const char cProcessName[],DWORD &dwPid){
 	HANDLE hProcessSnap;
@@ -43,5 +45,8 @@ void setColor(WORD wColor){
 
 /*退出程序*/
 void close(void){
+	if(p_g_dwBuffer!=NULL){
+		free(p_g_dwBuffer);
+	}
 	exit(EXIT_SUCCESS);
 }

@@ -12,13 +12,20 @@ static DWORD g_dwPid;
 static HANDLE g_hProcess;
 static int g_iCommand;
 
-static DWORD *p_g_dwBuffer;
+DWORD *p_g_dwBuffer;
 
 /*初始化修改器*/
 void initModifier(void){
 	SetConsoleTitle("【植物大战僵尸】 C语言修改器 v0.22");
 	
 	p_g_dwBuffer=(DWORD *)malloc(sizeof(DWORD));
+	if(p_g_dwBuffer==NULL){
+		setColor(BRIGHT_RED);
+		puts("分配修改内存失败！");
+		
+		pause();
+		close();
+	}
 	
 	g_hProcess=0;
 	g_bIsBackStageRun=FALSE;
