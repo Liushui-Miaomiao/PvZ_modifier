@@ -1,5 +1,6 @@
-#ifndef _COLOR_H_
-#define _COLOR_H_
+#pragma once
+
+#include <wincon.h>
 
 #define BRIGHT_RED FOREGROUND_RED|FOREGROUND_INTENSITY
 #define BRIGHT_GREEN FOREGROUND_GREEN|FOREGROUND_INTENSITY
@@ -10,7 +11,4 @@
 #define BRIGHT_WHITE FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE|FOREGROUND_INTENSITY
 #define MAGENTA FOREGROUND_RED|FOREGROUND_BLUE
 
-/*p_op - Process Operation*/
-void setColor(WORD wColor);
-
-#endif
+void SetColor(WORD wColor);
