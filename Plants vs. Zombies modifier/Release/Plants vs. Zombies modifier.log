@@ -1,1 +1,11 @@
-﻿
+﻿  memory.c
+  message.c
+  modifiy.c
+  Plants vs. Zombies modifier.c
+  process.c
+  正在生成代码
+  11 of 37 functions (29.7%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  Plants vs. Zombies modifier.vcxproj -> E:\C Project\Plants vs. Zombies modifier\Release\Plants vs. Zombies modifier.exe

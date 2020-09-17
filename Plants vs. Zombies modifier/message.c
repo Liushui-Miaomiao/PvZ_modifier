@@ -154,14 +154,24 @@ static void BranchUniversal(void) {
 		ExecutionInformation(ChangeSunLight(),"阳光");
 		break;
 	case '2':
+		printf("\n请输入要修改的金钱数量：");
+		scanf_s("%d", p_dwBuffer);
+		ExecutionInformation(ChangeMoney(), "金钱");
 		break;
 	case '3':
+		ExecutionInformation(CardNoCD(), "卡牌无冷却");
 		break;
 	case '4':
+		ExecutionInformation(AllowBackStageRun(!g_bIsBackStageRun), g_bIsBackStageRun ? "恢复后台" : "取消后台");
+		g_bIsBackStageRun = !g_bIsBackStageRun;
 		break;
 	case '5':
+		printf("\n请输入要修改的卡槽格数：");
+		scanf_s("%d", p_dwBuffer);
+		ExecutionInformation(ChangeCardNum(), "卡槽格数");
 		break;
 	case '6':
+		ExecutionInformation(AutoCollect(), "自动收集开启");
 		break;
 	default:
 		OperationNotFound();
@@ -267,11 +277,11 @@ static void About(void) {
 static void ExecutionInformation(BOOL bIsSuccess, char* cMessage) {
 	if (bIsSuccess) {
 		SetColor(BRIGHT_GREEN);
-		printf("\n修改【%s】成功！\n", cMessage);
+		printf("\n修改[%s]成功！\n", cMessage);
 	}
 	else {
 		SetColor(BRIGHT_RED);
-		printf("\n修改【%s】失败！\n", cMessage);
+		printf("\n修改[%s]失败！\n", cMessage);
 	}
 
 	Pause();

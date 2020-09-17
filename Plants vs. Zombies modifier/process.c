@@ -52,7 +52,7 @@ BOOL OpenGameProcess(void) {
 		if (g_hProcess) {
 			SetColor(BRIGHT_GREEN);
 			puts("游戏进程打开成功！");
-
+			
 			ReadState();													//读取游戏现有状态
 			return TRUE;
 		}
@@ -69,40 +69,41 @@ BOOL OpenGameProcess(void) {
 }
 
 BOOL GetProcessPidByName(char *cProcessName, DWORD *dwPid) {
-	HANDLE hProcessSnap;
+	HANDLE l_hProcessSnap;
 
-	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);			//拍摄进程快照
-	if (hProcessSnap == INVALID_HANDLE_VALUE) {
+	l_hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);		//拍摄进程快照
+	if (l_hProcessSnap == INVALID_HANDLE_VALUE) {
 		return FALSE;
 	}
 
-	PROCESSENTRY32 pe32;
-	pe32.dwSize = sizeof(PROCESSENTRY32);
+	PROCESSENTRY32 l_pe32;
+	l_pe32.dwSize = sizeof(PROCESSENTRY32);
 
-	if (Process32First(hProcessSnap, &pe32) == 0) {							//第一个进程是否存在
-		CloseHandle(hProcessSnap);
+	if (Process32First(l_hProcessSnap, &l_pe32) == 0) {						//第一个进程是否存在
+		CloseHandle(l_hProcessSnap);
 		return FALSE;
 	}
 
 	BOOL bIsOK = FALSE;
 	do {
-		if (!strcmp(cProcessName, pe32.szExeFile)) {						//比较进程名
-			*dwPid = pe32.th32ProcessID;									//获取进程Pid
+		if (!strcmp(cProcessName, l_pe32.szExeFile)) {						//比较进程名
+			*dwPid = l_pe32.th32ProcessID;									//获取进程Pid
 			bIsOK = TRUE;
 			break;
 		}
-	} while (Process32Next(hProcessSnap, &pe32));
+	} while (Process32Next(l_hProcessSnap, &l_pe32));
 
-	CloseHandle(hProcessSnap);
+	CloseHandle(l_hProcessSnap);
 
 	return bIsOK;
 }
 
 static void ReadState(void) {
 	if (ReadMemory(0x42748E, 4, 0) == 0xFF563DE8) {							//判断版本
-		if (ReadMemory(0x0054EBEF, 1, 0) == 0xFF563DC3) {
+		//printf("%d\t%d", ReadMemory(0x0054EBEF, 1, 0), 0xCCCCCCC3);
+		if (ReadMemory(0x0054EBEF, 1, 0) == 0xCCCCCCC3) {
 			g_bIsBackStageRun = TRUE;
-		}
+		}//下面的都还没测试和修改，后面再改
 		if (ReadMemory(0x0040FE30, 1, 0) == 0xFF563D81 &&
 			ReadMemory(0x00438E40, 1, 0) == 0xFF563DEB &&
 			ReadMemory(0x0042A2D9, 1, 0) == 0xFF563D8D) {
