@@ -67,7 +67,9 @@ void Menu(void) {
 void Select(void) {
 	SetColor(BRIGHT_YELLOW);
 	printf("请选择要进行的操作：");
-	int l_iCommand = getchar();
+	char l_iCommand = 0;
+	scanf_s("%c", &l_iCommand, 1);
+	//printf("%d", l_iCommand);
 
 	SetColor(BRIGHT_MAGENTA);
 	switch (l_iCommand) {
@@ -87,6 +89,9 @@ void Select(void) {
 			Pause();
 			break;
 		}
+
+		getchar();
+		SetColor(BRIGHT_YELLOW);
 
 		switch (l_iCommand) {
 		case 'a':
@@ -140,9 +145,6 @@ static void OperationNotFound(void) {
 }
 
 static void BranchUniversal(void) {
-	getchar();
-	SetColor(BRIGHT_YELLOW);
-
 	printf("\n已进入[常规修改]菜单，请选择要进行的操作：");
 	int l_iCommand = getchar();
 	SetColor(BRIGHT_MAGENTA);
@@ -179,7 +181,24 @@ static void BranchUniversal(void) {
 }
 
 static void BranchCheckpoint(void) {
+	printf("\n已进入[关卡修改]菜单，请选择要进行的操作：");
+	int l_iCommand = getchar();
+	SetColor(BRIGHT_MAGENTA);
 
+	switch (l_iCommand) {
+	case '1':
+		printf("\n请输入要修改的冒险关卡：");
+		scanf_s("%d", p_dwBuffer);
+		ExecutionInformation(AdventureJumpLevel(), "冒险关卡");
+		break;
+	case '2':
+		printf("\n请输入要进入的迷你游戏ID：");
+		scanf_s("%d", p_dwBuffer);
+		ExecutionInformation(ChangeMoney(), "金钱");
+		break;
+	default:
+		OperationNotFound();
+	}
 }
 
 static void BranchPlants(void) {

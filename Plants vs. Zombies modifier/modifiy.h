@@ -6,3 +6,4 @@ BOOL CardNoCD(void);
 BOOL AllowBackStageRun(BOOL b);
 BOOL ChangeCardNum(void);
 BOOL AutoCollect(void);
+BOOL AdventureJumpLevel(void);

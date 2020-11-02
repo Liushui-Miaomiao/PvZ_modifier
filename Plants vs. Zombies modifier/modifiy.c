@@ -54,3 +54,10 @@ BOOL ChangeCardNum(void) {
 BOOL AutoCollect(void) {
 	return WriteMemory(0x0043158F, 0xEB, 1, 0);
 }
+
+BOOL AdventureJumpLevel(void) {
+	DWORD dwLevel;
+	dwLevel = Limit(*p_dwBuffer, 11, 99) - 10;
+
+	return WriteMemory(0x006A9EC0, dwLevel, 4, 2, 0x82C, 0x24);
+}

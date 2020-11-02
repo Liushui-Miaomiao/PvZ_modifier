@@ -100,7 +100,7 @@ BOOL GetProcessPidByName(char *cProcessName, DWORD *dwPid) {
 
 static void ReadState(void) {
 	if (ReadMemory(0x42748E, 4, 0) == 0xFF563DE8) {							//判断版本
-		//printf("%d\t%d", ReadMemory(0x0054EBEF, 1, 0), 0xCCCCCCC3);
+		printf("%d\t%d", ReadMemory(0x0054EBEF, 1, 0), 0xCCCCCCC3);
 		if (ReadMemory(0x0054EBEF, 1, 0) == 0xCCCCCCC3) {
 			g_bIsBackStageRun = TRUE;
 		}//下面的都还没测试和修改，后面再改
